@@ -7,7 +7,7 @@
 import React from 'react';
 import { decode, encode } from 'base-64';
 import { ScrollView, ActivityIndicator, View, Modal, Text } from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import Colors from '../constants/Colors';
 import OSUButton from '../components/Button.js';

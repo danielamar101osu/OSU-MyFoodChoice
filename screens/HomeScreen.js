@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ActivityIndicator, Image, Alert, Text, StyleSheet, View} from 'react-native';
 import { decode, encode } from 'base-64';
-import AsyncStorage from '@react-native-community/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Location from 'expo-location';
 import OSUButton from '../components/Button.js';
 import User from '../User.js';
