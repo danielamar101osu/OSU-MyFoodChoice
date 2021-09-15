@@ -1,7 +1,7 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
-import { Platform, StatusBar, StyleSheet, View } from 'react-native';
+import { Platform, StatusBar, StyleSheet, View, Text } from 'react-native';
 
 import useCachedResources from './hooks/useCachedResources';
 import BottomTabNavigator from './navigation/BottomTabNavigator';
@@ -27,6 +27,14 @@ import DirectionScreen from './screens/DirectionScreen';
 
 const Stack = createStackNavigator();
 
+const linking = {
+  prefixes: [
+    /* your linking prefixes */
+  ],
+  config: {
+    /* configuration for matching screens with paths */
+  },
+};
 
 //Creates Navigator and navigates to home screen.  All navigation afterwards is dependent on current screen.
 //-Venables
@@ -43,7 +51,7 @@ export default function App(props) {
     return (
       <View style={styles.container}>
         {Platform.OS === 'ios' && <StatusBar barStyle="dark-content" />}
-        <NavigationContainer linking={LinkingConfiguration}>
+        <NavigationContainer linking={linking} fallback={<Text>Loading...</Text>}>
           <Stack.Navigator>
             <Stack.Screen name="Home" component={Home} />
             <Stack.Screen name="UserInputGoals" component={UserInputGoals} options={{title: "Input"}}/>

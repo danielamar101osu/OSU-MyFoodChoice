@@ -23,7 +23,7 @@ const haversine = require('haversine');
 class UserInputGoals extends React.Component {
 
 	state = {
-		showAlert: false, animate: false, UserLocation: JSON.parse(global.Location).coords,
+		// showAlert: false, animate: false, UserLocation: JSON.parse().coords,
 		restrictionsVisible: false, goal: 'Maintain', mealPlan: 'none',
 		ageText: 0, weightText: 0, heightText: 0,
 		dairy: false, eggs: false, fish: false, gluten: false, peanuts: false, shellfish: false, soy: false, treenuts: false, wheat: false, vegetarian: false, vegan: false
@@ -39,7 +39,7 @@ class UserInputGoals extends React.Component {
 		this.handleMealPlanChange = this.handleMealPlanChange.bind(this);
 
 		this.SaveUserData = this.SaveUserData.bind(this);
-		this.getData = this.getData.bind(this);
+		// this.getData = this.getData.bind(this);
 		this.saveData = this.saveData.bind(this);
 		this.getClosestLocation = this.getClosestLocation.bind(this);
 		this.validCheck = this.validCheck.bind(this);
@@ -218,7 +218,7 @@ class UserInputGoals extends React.Component {
 	async getData() {
 		try {
 			const jsonUser = await AsyncStorage.getItem('userInfo');
-			user = JSON.parse(jsonUser);
+			// user = JSON.parse(jsonUser);
 			this.message =
 				'mealPlan: ' + user.mealPlan.type + '\n'
 				+ 'gluten: ' + user.restrictions.Gluten + '\n'
@@ -480,7 +480,7 @@ class UserInputGoals extends React.Component {
 				/>
 				<OSUButton
 					title='display data'
-					onPress={e => { e.preventDefault(), this.setState({ showAlert: true }), this.getData(user) }}
+					onPress={e => { e.preventDefault(), this.setState({ showAlert: true }) }}
 				/>
 				<OSUButton
 					title='Continue'

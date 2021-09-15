@@ -9,7 +9,7 @@ export default function OSUButton ({ title, onPress, submit = false}) {
         <View style = {buttons.container}>
             <TouchableOpacity
                     style = {submit ? buttons.submitButton:buttons.button}
-                    onPress = {onPress}
+                    onPress = {()=>{console.log("hello")}}
                 >
                 <Text style = {buttons.text}>{title}</Text>
             </TouchableOpacity>

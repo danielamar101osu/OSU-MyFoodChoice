@@ -9,12 +9,6 @@ import * as firebase from 'firebase';
 import 'firebase/firestore';
 import Colors from '../constants/Colors';
 
-YellowBox.ignoreWarnings(['Setting a timer']);
-
-//missing a promise when checking for next location
-console.disableYellowBox = true;	
-
-
 class NearestFoodScreen extends React.Component {
 	state = { 
 		showAlert: false, 
