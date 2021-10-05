@@ -9,6 +9,7 @@ import { LoadingScreen } from './loading-modal';
 import { useDispatch, useSelector } from 'react-redux';
 import getMeals from './assets/static/meals';
 import { setMeals } from './redux/actions/food-action';
+import { google_api_key } from './config';
 
 export default function DinnerScreen() {
     const user = useSelector(state => state.user)
@@ -65,7 +66,7 @@ export default function DinnerScreen() {
         setRegion(user.location)
         console.log(user.location)
     }, [user.location])
-    const GOOGLE_MAPS_APIKEY = 'AIzaSyDW6B-EPyltDyvm_hpK74yyoIyw2qw4jJA';
+    const GOOGLE_MAPS_APIKEY = google_api_key;
     console.log(Dimensions.get("window").width)
     return (
         <View style={styles.centeredView}>
