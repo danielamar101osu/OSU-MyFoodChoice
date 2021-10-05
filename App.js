@@ -2,7 +2,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
 import { Platform, StatusBar, StyleSheet, View } from 'react-native';
-
+import { FBWrapper } from './app/FBWrapper';
 import useCachedResources from './hooks/useCachedResources';
 import BottomTabNavigator from './navigation/BottomTabNavigator';
 import LinkingConfiguration from './navigation/LinkingConfiguration';
@@ -27,12 +27,11 @@ import DirectionScreen from './screens/DirectionScreen';
 
 const Stack = createStackNavigator();
 
-
 //Creates Navigator and navigates to home screen.  All navigation afterwards is dependent on current screen.
 //-Venables
 export default function App(props) {
   const isLoadingComplete = useCachedResources();
-
+  
   global.DirectionName = 'Directions';
 
   //console.disableYellowBox = true;

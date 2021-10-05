@@ -58,20 +58,6 @@ class HomeScreen extends React.Component {
 
 		if (!global.atob) { global.atob = decode; }
 
-		//Initialize Firebase..
-		if (!firebase.apps.length) {
-			firebase.initializeApp({
-				apiKey: "AIzaSyBCjwYHTf9Yj1kAN7mByIhnA3rD0OZlzJY",
-				authDomain: "osumyfoodchoiceapp-a8fd6.firebaseapp.com",
-				databaseURL: "https://osumyfoodchoiceapp-a8fd6.firebaseio.com",
-				projectId: "osumyfoodchoiceapp-a8fd6",
-				storageBucket: "osumyfoodchoiceapp-a8fd6.appspot.com",
-				messagingSenderId: "752614312654",
-				appId: "1:752614312654:web:e3234a1c1c83e85a0dde9f",
-				measurementId: "G-XKCPW0Q23G"
-			});
-		}
-
 		var database = firebase.firestore();
 		var location = "";
 		var restaurantLocation = this.location;
