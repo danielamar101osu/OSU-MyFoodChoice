@@ -34,16 +34,20 @@ export class FBWrapper {
         return FBWrapper.mInstance;
     }
 
-    public createUser(email:string,  password:string) {
+    public async createUser(email:string,  password:string) {
         //TODO implement creation handles
+        //return something to let know when create done/or if there was an error
         auth().createUserWithEmailAndPassword(email, password)
             .catch((reason) => {
                 
             });
+
+            //log user in?
     }
 
     public loginUser(email:string,  password:string) {
         //TODO implement login error handles
+        //return something to let know when login done/or if there was an error
         auth().signInWithEmailAndPassword(email, password)
             .catch((reason) => {
 
@@ -58,7 +62,7 @@ export class FBWrapper {
     /** Returns a model of the currently logged in user. 
      * @param mo a listener object that will be called on when the user model updates
     */
-    public getUserData(mo:ModelObserver):UserModel {
+    public getCurrentUserData(mo:ModelObserver):UserModel {
         let um:UserModel = new UserModel();
     
         this.mDatabase.collection('users').doc(auth().currentUser.uid).onSnapshot({
