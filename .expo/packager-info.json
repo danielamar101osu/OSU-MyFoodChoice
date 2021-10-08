@@ -1,10 +1,10 @@
 {
   "devToolsPort": 19002,
-  "expoServerPort": null,
+  "expoServerPort": 19000,
   "packagerPort": 19000,
   "expoServerNgrokUrl": "https://zw-ezq.lukepetersen29.osu-myfoodchoice.exp.direct",
   "packagerNgrokUrl": "https://packager.zw-ezq.lukepetersen29.osu-myfoodchoice.exp.direct",
-  "ngrokPid": 50290,
+  "ngrokPid": 4339,
   "packagerPid": null,
-  "webpackServerPort": null
+  "webpackServerPort": 19006
 }

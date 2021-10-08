@@ -1,15 +1,12 @@
-import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, Image, FlatList, ScrollView, Alert, Modal, TouchableHighlight, TouchableOpacity, Dimensions } from 'react-native';
-import { TabView, SceneMap } from 'react-native-tab-view';
-import { Ionicons, Feather } from '@expo/vector-icons';
+import { StyleSheet, Text, View, Image, FlatList, ScrollView, Alert, Modal, TouchableOpacity, Dimensions } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import MapView from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
-import { LoadingScreen } from './loading-modal';
 import { useDispatch, useSelector } from 'react-redux';
-import getMeals from './assets/static/meals';
-import { setMeals } from './redux/actions/food-action';
-import { google_api_key } from './config';
+import getMeals from '../../assets/static/meals';
+import { setMeals } from '../../redux/actions/food-action';
+import { google_api_key } from '../../config';
 
 export default function DinnerScreen() {
     const user = useSelector(state => state.user)

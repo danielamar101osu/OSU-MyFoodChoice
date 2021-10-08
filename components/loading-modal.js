@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Platform, Text, View, StyleSheet, ActivityIndicator } from 'react-native';
 import { createStore } from 'redux';
-import userReducer from './redux/reducers/user-reducer';
+import userReducer from '../redux/reducers/user-reducer';
 import * as Location from 'expo-location';
 import { useDispatch } from 'react-redux';
-import { updateLocation } from './redux/actions/user-action';
+import { updateLocation } from '../redux/actions/user-action';
 
 
-export const LoadingScreen = ({ closeModal }) => {
+export default LoadingModal = ({ closeModal }) => {
   const dispatch = useDispatch()
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
