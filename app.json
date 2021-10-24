@@ -1,18 +1,12 @@
 {
   "expo": {
-    "name": "MyFoodChoiceApp",
-    "slug": "MyFoodChoiceApp",
-    "platforms": [
-      "ios",
-      "android",
-      "web"
-    ],
+    "name": "osuclean",
+    "slug": "osuclean",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
-    "scheme": "myapp",
+    "icon": "./assets/icon.png",
     "splash": {
-      "image": "./assets/images/splash.png",
+      "image": "./assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -25,9 +19,14 @@
     "ios": {
       "supportsTablet": true
     },
-    "web": {
-      "favicon": "./assets/images/favicon.png"
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#FFFFFF"
+      }
     },
-    "description": ""
+    "web": {
+      "favicon": "./assets/favicon.png"
+    }
   }
 }
