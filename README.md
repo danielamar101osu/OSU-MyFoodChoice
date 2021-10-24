@@ -8,10 +8,17 @@ OSU MyFoodChoice App is intended to be an application that students can use to f
 The product is an Android/iOS mobile application that stores data in the cloud for accessibility from any device at any time.
 
 
+## Install
+
+
+//TODO
 
 
 
-## Developers
+
+
+
+### Developers
 
 Daniel Amar
 
