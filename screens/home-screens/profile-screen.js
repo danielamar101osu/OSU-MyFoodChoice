@@ -26,6 +26,7 @@ export default function ProfileScreen({ closeProfileScreen, navigation }) {
                     ],
                 })
             );
+            console.log('signed out.')
         } catch (e) {
             console.log(e)
         }
@@ -162,7 +163,7 @@ export default function ProfileScreen({ closeProfileScreen, navigation }) {
                             </TouchableOpacity>
                             <TouchableOpacity onPress={() => {
                                 setShowEditModal([])
-                                console.log('edit', editValues)
+                                console.log('Edited Profile values', editValues)
                                 put('/users/:uid', editValues)
                                 dispatch(updateUser(editValues))
                             }} style={{ paddingHorizontal: 30, paddingVertical: 10, backgroundColor: 'rgba(0,200,0,.9)', width: '40%', borderRadius: 10, justifyContent: 'center', alignItems: 'center' }}>

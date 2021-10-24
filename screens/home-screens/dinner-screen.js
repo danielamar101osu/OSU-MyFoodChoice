@@ -6,7 +6,7 @@ import MapViewDirections from 'react-native-maps-directions';
 import { useDispatch, useSelector } from 'react-redux';
 import getMeals from '../../assets/static/meals';
 import { setMeals } from '../../redux/actions/food-action';
-import { google_api_key } from '../../config';
+// import { google_api_key } from '../../config';
 
 export default function DinnerScreen() {
     const user = useSelector(state => state.user)
@@ -62,7 +62,7 @@ export default function DinnerScreen() {
     useEffect(() => {
         setRegion(user.location)
     }, [user.location])
-    const GOOGLE_MAPS_APIKEY = google_api_key;
+    // const GOOGLE_MAPS_APIKEY = google_api_key;
     return (
         <View style={styles.centeredView}>
             <Modal

@@ -13,6 +13,7 @@ export default function LoadingScreen({ navigation }) {
   const dispatch = useDispatch()
   useEffect(() => {
     firebase.auth().onAuthStateChanged(async (u) => {
+      console.log("U is:")
       console.log(u)
       if (u) {
         console.log('loggedin')
