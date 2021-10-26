@@ -1,18 +1,37 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, TextInput, SafeAreaView, Image, KeyboardAvoidingView } from 'react-native';
+import { View, Text, TouchableOpacity, TextInput, SafeAreaView, ScrollView, Image, KeyboardAvoidingView } from 'react-native';
 import * as firebase from 'firebase'
+import parseErrorStack from 'react-native/Libraries/Core/Devtools/parseErrorStack';
+import { post } from '../../firebase-services/networking/network';
 
 export default function SignUpScreen({ navigation }) {
-  const [userInfo, setUserInfo] = useState({ email: '', password: '' })
+  const [userInfo, setUserInfo] = useState(
+    { email: '',
+      password: '',
+      firstName: '',
+      lastName: '',
+      dotNumber: '',
+      weight: '',
+      height: '',
+      password: '',
+      confirmPassword: '' 
+    })
   async function signUp() {
-    console.log(userInfo)
-    // try {
-    //   let user = await firebase.auth().createUserWithEmailAndPassword(userInfo.email, userInfo.password)
-    //   console.log('signed up', user)
-    //   await signIn()
-    // } catch (e) {
-    //   console.log(e)
-    // }
+    console.log(`In signup, user info is ${userInfo}`);
+    try {
+      //Create firebase user
+      await firebase.auth().createUserWithEmailAndPassword(userInfo.email, userInfo.password);
+
+      //Populate 
+      await post('/users/:uid',userInfo)
+
+      console.log('signed up successfully')
+      
+      await signIn()
+
+    } catch (e) {
+      console.log(`Error signing in/signing up: ${e}`);
+    }
   }
   async function signIn() {
     try {
@@ -26,9 +45,10 @@ export default function SignUpScreen({ navigation }) {
   return (
     <SafeAreaView style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <KeyboardAvoidingView behavior={'padding'} style={{ flex: 1, width: '100%' }} >
+        <ScrollView>
         <View style={{ padding: 40, alignItems: 'center' }}>
-          <Image source={require('../../assets/images/blocko.png')} style={{ width: 100, height: 100, resizeMode: 'contain' }} />
-          <Text style={{ fontFamily: 'Nunito-Light', fontSize: 30, width: '100%' }}>Sign Up</Text>
+          <View style={{  height: 100}}></View>
+          <Text style={{ fontFamily: 'Nunito-Light', fontSize: 30, width: '100%', textAlign: 'center' }}>Sign Up</Text>
           <TextInput placeholder='first name' onChangeText={c => setUserInfo({ ...userInfo, firstName: c })} style={{ marginVertical: 10, borderRadius: 5, borderWidth: 1, width: "100%", height: 50, padding: 5 }}></TextInput>
           <View style={{ flexDirection: 'row', width: "100%", justifyContent: 'space-between', alignItems: 'baseline' }}>
             <TextInput placeholder='last name' onChangeText={c => setUserInfo({ ...userInfo, lastName: c })} style={{ marginVertical: 10, borderRadius: 5, borderWidth: 1, height: 50, padding: 5, flex: 4 }}></TextInput>
@@ -48,6 +68,7 @@ export default function SignUpScreen({ navigation }) {
           <TouchableOpacity onPress={signUp} style={{ backgroundColor: 'rgba(200, 10,10,.5)', width: '40%', justifyContent: "center", alignItems: 'center', padding: 20, borderRadius: 10 }}><Text style={{ fontFamily: 'Nunito-Regular', color: 'white', fontSize: 20 }}>Login</Text></TouchableOpacity>
           <TouchableOpacity onPress={() => { navigation.navigate('Login') }} style={{ margin: 30 }}><Text style={{ fontFamily: 'Nunito-Regular', color: 'gray', fontSize: 15 }}>Already have an account? Login Here</Text></TouchableOpacity>
         </View>
+        </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView >
   );

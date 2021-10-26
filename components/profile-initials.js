@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux'
 
 export default ProfileInitials = ({ showProfile, size, right, top }) => {
     const user = useSelector(state => state.user.user)
+
     return (
         <View style={{ borderRadius: 500, backgroundColor: '#e9e1c4', padding: 3, height: size, width: size, justifyContent: 'center', alignItems: 'center', alignSelf: 'center' }}>
             <TouchableOpacity onPress={showProfile}>
