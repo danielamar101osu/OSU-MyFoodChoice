@@ -8,9 +8,9 @@ import { get } from '../../firebase-services/networking/network';
 export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-
+  console.log('loading')
   async function signIn() {
-    
+
     console.log(`Email: ${email} and Password is: ${password}`)
     try {
       await firebase.auth().signInWithEmailAndPassword(email, password)

@@ -6,15 +6,18 @@ import * as firebase from 'firebase'
 import { CommonActions } from '@react-navigation/native';
 import { get } from '../../firebase-services/networking/network';
 import { useDispatch } from 'react-redux';
-import { setUser } from '../../redux/actions/user-action';
-
+import { setUser, updateLocation } from '../../redux/actions/user-action';
+import * as Location from 'expo-location';
 
 export default function LoadingScreen({ navigation }) {
   const dispatch = useDispatch()
   useEffect(() => {
+    // (async () => {
+    //   let user = await get('/users/:uid', {})
+    //   console.log('dff', user)
+    // })();
     firebase.auth().onAuthStateChanged(async (u) => {
-      console.log("U is:")
-      console.log(u)
+      console.log("U is:", u ? u.uid : 'null')
       if (u) {
         console.log('loggedin')
         let user = await get('/users/:uid', {})
@@ -40,6 +43,24 @@ export default function LoadingScreen({ navigation }) {
       }
     });
   }, [])
+
+  useEffect(() => {
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        setErrorMsg('Permission to access location was denied');
+        return;
+      }
+
+      let location = await Location.getCurrentPositionAsync({});
+      dispatch(updateLocation({
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+        latitudeDelta: 0.02,
+        longitudeDelta: 0.02,
+      }))
+    })();
+  }, []);
   return (
     <View>
       <Text>Loading</Text>
