@@ -10,7 +10,7 @@ import { setUser, updateLocation } from '../../redux/actions/user-action';
 import * as Location from 'expo-location';
 
 export default function LoadingScreen({ navigation }) {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   useEffect(() => {
     // (async () => {
     //   let user = await get('/users/:uid', {})
@@ -19,27 +19,32 @@ export default function LoadingScreen({ navigation }) {
     firebase.auth().onAuthStateChanged(async (u) => {
       console.log("U is:", u ? u.uid : 'null')
       if (u) {
-        console.log('loggedin')
-        let user = await get('/users/:uid', {})
-        dispatch(setUser(user))
-        navigation.dispatch(
-          CommonActions.reset({
-            index: 1,
-            routes: [
-              { name: 'Home' },
-            ],
-          })
-        );
+        let user = await get("/users/:uid", {});
+        console.log("Gotten User is:");
+        console.log(user);
+        if (!user) {
+          navigation.dispatch(
+            CommonActions.reset({
+              index: 1,
+              routes: [{ name: "Login" }],
+            })
+          );
+        } else {
+          dispatch(setUser(user));
+          navigation.dispatch(
+            CommonActions.reset({
+              index: 1,
+              routes: [{ name: "Home" }],
+            })
+          );
+        }
       } else {
         navigation.dispatch(
           CommonActions.reset({
             index: 1,
-            routes: [
-              { name: 'Login' },
-            ],
+            routes: [{ name: "Login" }],
           })
         );
-
       }
     });
   }, [])

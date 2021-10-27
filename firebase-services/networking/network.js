@@ -24,3 +24,15 @@ export async function put(path, data) {
     return e
   }
 }
+
+export async function post(path, data) {
+  try {
+    console.log(`post: ${ENDPOINT}${path.replace(':uid', firebase.auth().currentUser.uid)}`)
+    let res = await axios.post(`${ENDPOINT}${path.replace(':uid', firebase.auth().currentUser.uid)}`, data)
+    return res.data;
+  } catch (e) {
+    console.log(e, 'err', JSON.stringify(e))
+    return e
+  }
+}
+
