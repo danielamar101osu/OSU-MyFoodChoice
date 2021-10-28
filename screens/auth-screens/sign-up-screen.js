@@ -5,6 +5,7 @@ import parseErrorStack from 'react-native/Libraries/Core/Devtools/parseErrorStac
 import { post } from '../../firebase-services/networking/network';
 import { LongPressGestureHandler } from 'react-native-gesture-handler';
 import { LearnMoreLinks } from 'react-native/Libraries/NewAppScreen';
+import DropDownPicker from 'react-native-dropdown-picker';
 
 export default function SignUpScreen({ navigation }) {
   const [userInfo, setUserInfo] = useState(
@@ -14,6 +15,8 @@ export default function SignUpScreen({ navigation }) {
       dotNumber: '',
       weight: '',
       height: '',
+      heightFoot: '',
+      heightInch: '',
       password: '',
       confirmPassword: '' 
     });
@@ -32,22 +35,56 @@ export default function SignUpScreen({ navigation }) {
     password: 'Password'
   }
 
+  //Height Feet dropdown data
+  const [heightInchOpen, setHeightInchOpen] = useState(false);
+  const [heightInchValue, setHeightInchValue] = useState(null);
+  const [heightInchItem, setHeightInchItem] = useState([
+    {label: '0 in', value: '0'},
+    {label: '1 in', value: '1'},
+    {label: '2 in', value: '2'},
+    {label: '3 in', value: '3'},
+    {label: '4 in', value: '4'},
+    {label: '5 in', value: '5'},
+    {label: '6 in', value: '6'},
+    {label: '7 in', value: '7'},
+    {label: '8 in', value: '8'},
+    {label: '9 in', value: '9'},
+    {label: '10 in', value: '10'},
+    {label: '11 in', value: '11'},
+  ]);
+
+  //Height Inches dropdown data
+  const [heightFootOpen, setHeightFootOpen] = useState(false);
+  const [heightFootValue, setHeightFootValue] = useState(null);
+  const [heightFootItem, setHeightFootItem] = useState([
+    {label: '4 ft', value: '4'},
+    {label: '5 ft', value: '5'},
+    {label: '6 ft', value: '6'},
+    {label: '7 ft', value: '7'},
+    {label: '8 ft', value: '8'},
+  ]);
+
   async function validateSignUp(){
 
     for(const [key,value] of Object.entries(userInfo)){
 
-      if(!value || value.length == 0){
+      //skip height as its intended to be empty
+      if(key != 'height' && (!value || value.length == 0)){
         setErrorMessage(`Please enter your ${englishMap[key]}`);
         setModalVisible(true);
         return;
       }
     }
 
-    if(userInfo.dotNumber <= 0 || userInfo.weight <= 0 || userInfo.height <= 0){
+    //TODO: Better logic here
+    if(userInfo.dotNumber <= 0 || userInfo.weight <= 0 || userInfo.heightFoot <= 0 || userInfo.heightInch <= 0){
       setErrorMessage('Please fill in missing values.')
       setModalVisible(true);
       return;
     }
+
+    //Set real height after its confirmed to exist
+    setUserInfo({ ...userInfo, height: (parseInt(userInfo.heightFoot * 12)) + parseInt(userInfo.heightInch)})
 
     if(userInfo.password.length < 8){
       setErrorMessage('Password must be at least 8 characters!')
@@ -130,9 +167,39 @@ export default function SignUpScreen({ navigation }) {
             <Text style={{ fontSize: 40, marginHorizontal: 6 }}>.</Text>
             <TextInput placeholder='dot #' keyboardType={'number-pad'} onChangeText={c => setUserInfo({ ...userInfo, dotNumber: c })} style={{ marginVertical: 10, borderRadius: 5, borderWidth: 1, height: 50, padding: 5, flex: 1 }}></TextInput>
           </View>
-          <View style={{ flexDirection: 'row', width: "100%", justifyContent: 'space-between', alignItems: 'baseline' }}>
-            <TextInput placeholder='Height' keyboardType={'number-pad'} onChangeText={c => setUserInfo({ ...userInfo, height: c })} style={{ marginVertical: 10, borderRadius: 5, borderWidth: 1, height: 50, padding: 5, flex: 1, marginEnd: 2 }}></TextInput>
-            <Text style={{ fontSize: 20, }}>inches</Text>
+          <View style={{ flexDirection: 'row', width: "100%", justifyContent: 'space-between'  }}>
+            {/* <TextInput placeholder='Height' keyboardType={'number-pad'} onChangeText={c => setUserInfo({ ...userInfo, height: c })} style={{ marginVertical: 10, borderRadius: 5, borderWidth: 1, height: 50, padding: 5, flex: 1, marginEnd: 2 }}></TextInput> */}
+            <DropDownPicker
+              placeholder="Feet"
+              zIndex={1000}
+              zIndexInverse={3000}
+              open={heightFootOpen}
+              value={heightFootValue}
+              items={heightFootItem}
+              setOpen={setHeightFootOpen}
+              setValue={setHeightFootValue}
+              setItems={setHeightFootItem}
+              listMode="SCROLLVIEW"
+              containerStyle={{width: "30%"}}
+              dropDownContainerStyle={{opacity: 1, marginBottom: 20}}
+              style={{marginVertical: 10, borderRadius: 5, borderWidth: 1, height: 50, padding: 0, flex: 1}}
+              onChangeValue={c => setUserInfo({ ...userInfo, heightFoot: c })}
+            />
+            <DropDownPicker
+              placeholder="Inches"
+              zIndex={1000}
+              zIndexInverse={3000}
+              open={heightInchOpen}
+              value={heightInchValue}
+              items={heightInchItem}
+              setOpen={setHeightInchOpen}
+              setValue={setHeightInchValue}
+              setItems={setHeightInchItem}
+              listMode="SCROLLVIEW"
+              containerStyle={{width: "30%"}}
+              style={{marginVertical: 10, borderRadius: 5, borderWidth: 1, height: 50, padding: 0, flex: 1, marginStart: 4, marginEnd: 4}}
+              onChangeValue={c => setUserInfo({ ...userInfo, heightInch: c })}
+            />
             <TextInput placeholder='Weight' keyboardType={'number-pad'} onChangeText={c => setUserInfo({ ...userInfo, weight: c })} style={{ marginVertical: 10, borderRadius: 5, borderWidth: 1, height: 50, padding: 5, flex: 1, marginStart: 8, marginEnd: 2 }}></TextInput>
             <Text style={{ fontSize: 20, }}>lbs</Text>
           </View>
