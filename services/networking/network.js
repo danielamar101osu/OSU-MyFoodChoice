@@ -1,7 +1,7 @@
 import axios from 'axios'
 import * as firebase from 'firebase'
 
-const ENDPOINT = `https://us-central1-osumyfoodchoiceapp-a8fd6.cloudfunctions.net/api`
+const ENDPOINT = `https://us-central1-osumyfoodchoiceapp-a8fd6.cloudfunctions.net`
 
 export async function get(path, location) {
   try {
