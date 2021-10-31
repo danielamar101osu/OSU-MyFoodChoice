@@ -3,7 +3,6 @@ import { SET_MEALS } from '../actions/food-action';
 
 const INITIAL_STATE = {
     meals: [],
-    snacks: [],
     other: []
 };
 

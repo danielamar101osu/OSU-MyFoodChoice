@@ -7,7 +7,7 @@ import { BlurView } from 'expo-blur';
 import ProfileInitials from '../../components/profile-initials';
 import * as firebase from 'firebase'
 import { updateAllergy, updateRestriction, updateUser } from '../../redux/actions/user-action';
-import { put } from '../../firebase-services/networking/network';
+import { put } from '../../services/networking/network';
 
 export default function ProfileScreen({ closeProfileScreen, navigation }) {
     const user = useSelector(state => state.user.user)

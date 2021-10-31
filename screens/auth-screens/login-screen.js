@@ -3,14 +3,13 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, TextInput, SafeAreaView, Image } from 'react-native';
 import * as firebase from 'firebase'
-import { get } from '../../firebase-services/networking/network';
+import { get } from '../../services/networking/network';
 
 export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-
   async function signIn() {
-    
+
     console.log(`Email: ${email} and Password is: ${password}`)
     try {
       await firebase.auth().signInWithEmailAndPassword(email, password)

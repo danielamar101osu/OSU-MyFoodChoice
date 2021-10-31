@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { Text, View, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { useSelector } from 'react-redux';
 import FoodInfoModal from '../../components/food-info-modal';
 import FoodListItem from '../../components/food-list-item';
 
-export default function DinnerScreen() {
+export default function SnackScreen() {
     const meals = useSelector(state => state.food.meals)
 
     const [modalVisible, setModalVisible] = useState(false);
@@ -17,9 +17,8 @@ export default function DinnerScreen() {
             alignItems: 'center',
             borderRadius: 20,
         }}>
-
             {meals.length == 0 ? <ActivityIndicator size='large' /> :
-                <FlatList data={meals.foods.filter(el => el.data.kcalValue > 300)}
+                <FlatList data={meals.foods.filter(el => el.data.kcalValue <= 300)}
                     style={{ width: "100%", paddingHorizontal: 10 }}
                     keyExtractor={item => item.id}
                     renderItem={(item) => {
