@@ -34,7 +34,9 @@ export default function SignUpScreen({ navigation }) {
     weight: 'Weight',
     height: 'Height',
     confirmPassword: 'Confirmation Password',
-    password: 'Password'
+    password: 'Password',
+    heightFoot: 'Height In Feet',
+    heightInch: 'Height in Inches'
   }
 
   //Height Feet dropdown data
@@ -68,25 +70,21 @@ export default function SignUpScreen({ navigation }) {
 
   async function validateSignUp() {
 
-    // for (const [key, value] of Object.entries(userInfo)) {
+    for (const [key, value] of Object.entries(userInfo)) {
 
-    //   //skip height as its intended to be empty
-    //   if (key != 'height' && (!value || value.length == 0)) {
-    //     setErrorMessage(`Please enter your ${englishMap[key]}`);
-    //     setModalVisible(true);
-    //     return;
-    //   }
-    // }
-
-    //TODO: Better logic here
-    if (userInfo.dotNumber <= 0 || userInfo.weight <= 0) {
-      setErrorMessage('Please fill in missing values.')
-      setModalVisible(true);
-      return;
+      //skip height as its intended to be empty
+      if (key != 'height' && (!value || value.length == 0)) {
+        setErrorMessage(`Please enter your ${englishMap[key]}`);
+        setModalVisible(true);
+        return;
+      }
     }
 
+    const totalHeight = (parseInt(userInfo.heightFoot) * 12) + parseInt(userInfo.heightInch);
+
     //Set real height after its confirmed to exist
-    setUserInfo({ ...userInfo, height: (parseInt(5)) + parseInt(5) })
+    setUserInfo({ ...userInfo, height: String(totalHeight)})
+    userInfo.height = String(totalHeight)
 
     if (userInfo.password.length < 8) {
       setErrorMessage('Password must be at least 8 characters!')
@@ -107,15 +105,38 @@ export default function SignUpScreen({ navigation }) {
     try {
 
       //Create firebase user
-      await firebase.auth().createUserWithEmailAndPassword(userInfo.email, userInfo.password);
+      await firebase.auth().createUserWithEmailAndPassword(userInfo.email, userInfo.password)
+        .then(()=>{
+          //Populate specific user collection
+          post('/users/:uid', userInfo)
 
-      //Populate specific user collection
-      await post('/users/:uid', userInfo)
+          console.log('signed up successfully')
 
-      console.log('signed up successfully')
+          //Route to signin
+          signIn()
 
-      //Route to signin
-      await signIn()
+      }).catch( (e) =>{
+        const errorCode = e.code;
+
+        if (errorCode == 'auth/email-already-in-use') {
+          setErrorMessage('Email is already in use!')
+          setModalVisible(true);
+          return;
+        }
+
+        if (errorCode == 'auth/invalid-email') {
+          setErrorMessage('Invalid email!')
+          setModalVisible(true);
+          return;
+        }
+
+        if (errorCode == 'auth/weak-password') {
+          setErrorMessage('Weak Password! Please enter something strong.')
+          setModalVisible(true);
+          return;
+        }
+
+      });
 
     } catch (e) {
       console.log(`Error signing in/signing up: ${e}`);

@@ -38,20 +38,21 @@ export default function HomeScreen({ navigation }) {
             console.log('fetching meals')
             fetchMeals()
         }
-    }, [user.location.latitude,
-    user.user.allergies.treeNuts,
-    user.user.allergies.dairy,
-    user.user.allergies.eggs,
-    user.user.allergies.peanuts,
-    user.user.allergies.shellFish,
-    user.user.allergies.soy,
-    user.user.allergies.wheat,
-    user.user.restrictions.beefFree,
-    user.user.restrictions.kosher,
-    user.user.restrictions.pescatarian,
-    user.user.restrictions.vegetarian,
-    user.user.restrictions.vegan,
-    user.user.restrictions.porkFree]);
+    });
+    // }, [user.location.latitude,
+    // user.user.allergies.treeNuts,
+    // user.user.allergies.dairy,
+    // user.user.allergies.eggs,
+    // user.user.allergies.peanuts,
+    // user.user.allergies.shellFish,
+    // user.user.allergies.soy,
+    // user.user.allergies.wheat,
+    // user.user.restrictions.beefFree,
+    // user.user.restrictions.kosher,
+    // user.user.restrictions.pescatarian,
+    // user.user.restrictions.vegetarian,
+    // user.user.restrictions.vegan,
+    // user.user.restrictions.porkFree]);
 
     async function fetchOrderHistory() {
         let response = await get(`/users/:uid/orders`, {})

@@ -8,12 +8,55 @@ import ProfileInitials from '../../components/profile-initials';
 import * as firebase from 'firebase'
 import { updateAllergy, updateRestriction, updateUser } from '../../redux/actions/user-action';
 import { put } from '../../services/networking/network';
+import DropDownPicker from 'react-native-dropdown-picker';
+
+async function setHeightValues(){
+
+    
+}
 
 export default function ProfileScreen({ closeProfileScreen, navigation }) {
     const user = useSelector(state => state.user.user)
     const dispatch = useDispatch()
     const [showEditModal, setShowEditModal] = useState([])
     const [editValues, setEditValues] = useState({})
+
+        //Height Feet dropdown data
+    const [heightInchOpen, setHeightInchOpen] = useState(false);
+    const [heightInchValue, setHeightInchValue] = useState(null);
+    const [heightInchItem, setHeightInchItem] = useState([
+        { label: '0 in', value: '0' },
+        { label: '1 in', value: '1' },
+        { label: '2 in', value: '2' },
+        { label: '3 in', value: '3' },
+        { label: '4 in', value: '4' },
+        { label: '5 in', value: '5' },
+        { label: '6 in', value: '6' },
+        { label: '7 in', value: '7' },
+        { label: '8 in', value: '8' },
+        { label: '9 in', value: '9' },
+        { label: '10 in', value: '10' },
+        { label: '11 in', value: '11' },
+    ]);
+
+    //Height Inches dropdown data
+    const [heightFootOpen, setHeightFootOpen] = useState(false);
+    const [heightFootValue, setHeightFootValue] = useState(null);
+    const [heightFootItem, setHeightFootItem] = useState([
+        { label: '4 ft', value: '4' },
+        { label: '5 ft', value: '5' },
+        { label: '6 ft', value: '6' },
+        { label: '7 ft', value: '7' },
+        { label: '8 ft', value: '8' },
+    ]);
+
+
+    var heightFoot = Math.trunc(user.height / 12);
+    var heightInch =  user.height % 12;
+    const heightFootStr = heightFoot.toString() + ' ft'
+    const heightInchStr = heightInch.toString() + ' in'
+    console.log('Set heights to defaultvalues')
+    
 
     async function signOut() {
         try {
@@ -54,14 +97,63 @@ export default function ProfileScreen({ closeProfileScreen, navigation }) {
                         <View
                             key={2}
                             style={{ backgroundColor: 'white', flexDirection: 'row', width: '100%', justifyContent: 'space-between', paddingVertical: 7, marginVertical: 5, paddingHorizontal: 20, alignItems: 'center', borderRadius: 20 }}>
-                            <Text style={{ color: 'black', fontSize: 20 }}>Height: {user.height} inches</Text>
-                            <TouchableOpacity style={{ padding: 5 }} onPress={() => setShowEditModal(
+                            <Text style={{ color: 'black', fontSize: 20 }}>Height </Text>
+                            <DropDownPicker
+                                placeholder= {heightFootStr}
+                                zIndex={1000}
+                                zIndexInverse={3000}
+                                open={heightFootOpen}
+                                value={heightFootValue}
+                                items={heightFootItem}
+                                setOpen={setHeightFootOpen}
+                                setValue={setHeightFootValue}
+                                setItems={setHeightFootItem}
+                                listMode="SCROLLVIEW"
+                                containerStyle={{ width: "30%", opacity: 1 }}
+                                dropDownContainerStyle={{ opacity: 1, marginBottom: 20, backgroundColor: '#e9e1c4' }}
+                                style={{ marginVertical: 10, borderRadius: 5, borderWidth: 1, height: 50, padding: 0, flex: 1, opacity: 1 }}
+                                onChangeValue={(val) => {
+                                    heightFoot = val
+                                    let temp = { ...editValues }
+                                    temp['height'] = ((parseInt(val) * 12) + parseInt(heightInch)).toString();
+                                    setEditValues(temp)
+                                    console.log(editValues)
+                                    put('/users/:uid', editValues)
+
+                                    }
+                                    }
+                             />
+                            <DropDownPicker
+                                placeholder={heightInchStr}
+                                zIndex={1000}
+                                zIndexInverse={3000}
+                                open={heightInchOpen}
+                                value={heightInchValue}
+                                items={heightInchItem}
+                                setOpen={setHeightInchOpen}
+                                setValue={setHeightInchValue}
+                                setItems={setHeightInchItem}
+                                listMode="SCROLLVIEW"
+                                containerStyle={{ width: "30%" }}
+                                style={{ marginVertical: 10, borderRadius: 5, borderWidth: 1, height: 50, padding: 0, flex: 1, marginStart: 4, marginEnd: 4 }}
+                                onChangeValue={(val) => {
+                                    let temp = { ...editValues }
+                                    heightInch = val
+                                    temp['height'] = ((parseInt(heightFoot) * 12) + parseInt(val)).toString();
+                                    setEditValues(temp)
+                                    console.log(editValues)
+                                    put('/users/:uid', editValues)
+                                    
+                                }
+                                }
+                            />
+                            {/* <TouchableOpacity style={{ padding: 5 }} onPress={() => setShowEditModal(
                                 [
                                     { key: 'height', label: 'height', type: 'number-pad' },
                                 ]
                             )}>
                                 <Feather name='edit' size={20} color='black' />
-                            </TouchableOpacity>
+                            </TouchableOpacity> */}
                         </View>
                         <View
                             key={3}
@@ -163,6 +255,7 @@ export default function ProfileScreen({ closeProfileScreen, navigation }) {
                             </TouchableOpacity>
                             <TouchableOpacity onPress={() => {
                                 setShowEditModal([])
+
                                 console.log('Edited Profile values', editValues)
                                 put('/users/:uid', editValues)
                                 dispatch(updateUser(editValues))
