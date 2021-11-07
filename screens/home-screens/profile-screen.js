@@ -10,11 +10,6 @@ import { updateAllergy, updateRestriction, updateUser } from '../../redux/action
 import { put } from '../../services/networking/network';
 import DropDownPicker from 'react-native-dropdown-picker';
 
-async function setHeightValues(){
-
-    
-}
-
 export default function ProfileScreen({ closeProfileScreen, navigation }) {
     const user = useSelector(state => state.user.user)
     const dispatch = useDispatch()
