@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { StyleSheet, Text, Animated, View, ScrollView, Alert, Modal, TouchableOpacity, Dimensions } from 'react-native';
+import { StyleSheet, Text, Animated, View, ScrollView, Alert, Modal, TouchableOpacity, Dimensions, Platform } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import MapView from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
@@ -23,9 +23,10 @@ export default function FoodInfoModal({ selectedItem, modalVisible, setModalVisi
     })
     const saveFood = async () => {
         setModalVisible(!modalVisible);
+        console.log({ locationId: locationData, foodId: selectedItem.id })
         let res = await post(`/users/:uid/orders`, { location_id: locationData, food_id: selectedItem.id })
         console.log(res)
-        setAlert(res === 'Order history updated successfully.' ? 'Order Saved!' : 'Error saving order')
+        setAlert(res.includes('Successfully') ? 'Order Saved!' : 'Error saving order')
         Animated.sequence([Animated.spring(fadeAnim, {
             toValue: -80,
             duration: 2000,
@@ -84,23 +85,24 @@ export default function FoodInfoModal({ selectedItem, modalVisible, setModalVisi
                         </View>
                         <ScrollView style={{ height: "87%" }}>
 
-                            {user.location.latitude == 0 ? <View></View> : <MapView style={{ height: 350, width: 350, borderRadius: 20, marginHorizontal: 10 }}
-                                initialRegion={region}
-                                scrollEnabled={true}
-                                region={{ ...region, latitude: meals.location.data.lat, longitude: meals.location.data.long }}>
-                                <MapViewDirections
-                                    strokeColor="#BB0000"
-                                    strokeWidth={3}
-                                    onReady={(d) => {
-                                        setDistance(d.distance * 0.621371)
-                                    }}
-                                    origin={{
-                                        latitude: user.location.latitude, longitude: user.location.longitude
-                                    }}
-                                    destination={{ latitude: meals.location.data.lat, longitude: meals.location.data.long }}
-                                    apikey={google_api_key}
-                                />
-                            </MapView>}
+                            {user.location.latitude == 0 || Platform.OS != 'ios' ? <View></View> :
+                                <MapView style={{ height: 350, width: 350, borderRadius: 20, marginHorizontal: 10 }}
+                                    initialRegion={region}
+                                    scrollEnabled={true}
+                                    region={{ ...region, latitude: meals.location.data.lat, longitude: meals.location.data.long }}>
+                                    <MapViewDirections
+                                        strokeColor="#BB0000"
+                                        strokeWidth={3}
+                                        onReady={(d) => {
+                                            setDistance(d.distance * 0.621371)
+                                        }}
+                                        origin={{
+                                            latitude: user.location.latitude, longitude: user.location.longitude
+                                        }}
+                                        destination={{ latitude: meals.location.data.lat, longitude: meals.location.data.long }}
+                                        apikey={google_api_key}
+                                    />
+                                </MapView>}
                             <NutritionLabel data={selectedItem.data} />
                         </ScrollView>
                         <TouchableOpacity

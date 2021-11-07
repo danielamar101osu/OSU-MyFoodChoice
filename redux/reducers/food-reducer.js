@@ -1,9 +1,8 @@
-import { combineReducers } from 'redux';
-import { SET_MEALS } from '../actions/food-action';
+import { SET_MEALS, SET_ORDERS } from '../actions/food-action';
 
 const INITIAL_STATE = {
     meals: [],
-    other: []
+    orders: []
 };
 
 export default foodReducer = (state = INITIAL_STATE, action) => {
@@ -12,6 +11,11 @@ export default foodReducer = (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 meals: action.payload
+            };
+        case SET_ORDERS:
+            return {
+                ...state,
+                orders: action.payload
             }
         default:
             return state

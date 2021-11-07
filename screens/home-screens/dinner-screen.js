@@ -15,7 +15,6 @@ export default function DinnerScreen() {
             flex: 1,
             justifyContent: 'center',
             alignItems: 'center',
-            borderRadius: 20,
         }}>
 
             {meals.length == 0 ? <ActivityIndicator size='large' /> :

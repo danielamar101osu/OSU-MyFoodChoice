@@ -35,6 +35,7 @@ if (firebase.apps.length === 0) {
 
 
 export default function App() {
+
   let [fontsLoaded] = useFonts({
     'Nunito-Regular': require('./assets/fonts/Nunito/Nunito-Regular.ttf'),
     'Nunito-SemiBold': require('./assets/fonts/Nunito/Nunito-SemiBold.ttf'),

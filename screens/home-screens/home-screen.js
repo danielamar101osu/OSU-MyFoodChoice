@@ -1,42 +1,39 @@
 import React, { useState, useEffect } from 'react';
-import { View, useWindowDimensions, SafeAreaView, Text, TouchableOpacity } from 'react-native';
+import { View, useWindowDimensions, SafeAreaView, Text } from 'react-native';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import ProfileInitials from '../../components/profile-initials';
 import DinnerScreen from './dinner-screen';
-import * as firebase from 'firebase'
-import profileScreen from './profile-screen';
 import ProfileScreen from './profile-screen';
 import { useSelector, useDispatch } from 'react-redux';
 import SnackScreen from './snack-screen';
-import { setMeals } from '../../redux/actions/food-action';
+import { setMeals, setOrderHistory } from '../../redux/actions/food-action';
 import { get } from '../../services/networking/network';
+import HistoryScreen from './history-screen';
+import ORDER_HISTORY_DUMMY from '../../assets/static/orders';
 
-const History = () => (
-    <View style={{ flex: 1, backgroundColor: '#673ab7' }} />
-);
 const renderScene = SceneMap({
     first: DinnerScreen,
     second: SnackScreen,
-    third: History,
+    third: HistoryScreen,
 });
 
 export default function HomeScreen({ navigation }) {
-    const [index, setIndex] = React.useState(0);
+    const [index, setIndex] = useState(0);
     const dispatch = useDispatch();
     const user = useSelector(state => state.user)
     const [userProfile, setUserProfile] = useState(false)
-    const [routes] = React.useState([
+    const [routes] = useState([
         { key: 'first', title: 'Meal' },
         { key: 'second', title: 'Snack' },
         { key: 'third', title: 'History' },
     ]);
+
     async function fetchMeals() {
-        let response = await get(`/foods/getFoodsForUser/:uid/${user.location.latitude}/${user.location.longitude}/0`, {})
+        let response = await get(`/foods/functions/getFoodsForUser/:uid/${user.location.latitude}/${user.location.longitude}/0`, {})
         dispatch(setMeals(response))
     }
 
     useEffect(() => {
-        console.log('updated')
         if (user.location.latitude !== 0) {
             console.log('fetching meals')
             fetchMeals()
@@ -56,7 +53,14 @@ export default function HomeScreen({ navigation }) {
     user.user.restrictions.vegan,
     user.user.restrictions.porkFree]);
 
+    async function fetchOrderHistory() {
+        let response = await get(`/users/:uid/orders`, {})
+        dispatch(setOrderHistory(ORDER_HISTORY_DUMMY))
+    }
+    useEffect(() => { fetchOrderHistory(); }, [])
+
     const layout = useWindowDimensions();
+
     return (<View style={{ flex: 1 }}>
         <SafeAreaView style={{ flex: 1, justifyContent: 'center' }}>
             <View style={{ justifyContent: 'space-between', flexDirection: 'row', paddingHorizontal: 15 }}>

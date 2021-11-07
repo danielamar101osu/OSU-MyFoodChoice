@@ -15,7 +15,6 @@ export default function SnackScreen() {
             flex: 1,
             justifyContent: 'center',
             alignItems: 'center',
-            borderRadius: 20,
         }}>
             {meals.length == 0 ? <ActivityIndicator size='large' /> :
                 <FlatList data={meals.foods.filter(el => el.data.kcalValue <= 300)}
