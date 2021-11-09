@@ -10,6 +10,7 @@ import { setMeals, setOrderHistory } from '../../redux/actions/food-action';
 import { get } from '../../services/networking/network';
 import HistoryScreen from './history-screen';
 import ORDER_HISTORY_DUMMY from '../../assets/static/orders';
+import * as firebase from 'firebase';
 
 const renderScene = SceneMap({
     first: DinnerScreen,
@@ -20,8 +21,8 @@ const renderScene = SceneMap({
 export default function HomeScreen({ navigation }) {
     const [index, setIndex] = useState(0);
     const dispatch = useDispatch();
-    const user = useSelector(state => state.user)
-    const [userProfile, setUserProfile] = useState(false)
+    const user = useSelector(state => state.user);
+    const [userProfile, setUserProfile] = useState(false);
     const [routes] = useState([
         { key: 'first', title: 'Meal' },
         { key: 'second', title: 'Snack' },
@@ -29,36 +30,36 @@ export default function HomeScreen({ navigation }) {
     ]);
 
     async function fetchMeals() {
-        let response = await get(`/foods/functions/getFoodsForUser/:uid/${user.location.latitude}/${user.location.longitude}/0`, {})
-        dispatch(setMeals(response))
+        let response = await get(`/foods/functions/getFoodsForUser/:uid/${user.location.latitude}/${user.location.longitude}/0`, {});
+        dispatch(setMeals(response));
     }
 
     useEffect(() => {
         if (user.location.latitude !== 0) {
-            console.log('fetching meals')
-            fetchMeals()
+            console.log('fetching meals');
+            fetchMeals();
         }
-    });
-    // }, [user.location.latitude,
-    // user.user.allergies.treeNuts,
-    // user.user.allergies.dairy,
-    // user.user.allergies.eggs,
-    // user.user.allergies.peanuts,
-    // user.user.allergies.shellFish,
-    // user.user.allergies.soy,
-    // user.user.allergies.wheat,
-    // user.user.restrictions.beefFree,
-    // user.user.restrictions.kosher,
-    // user.user.restrictions.pescatarian,
-    // user.user.restrictions.vegetarian,
-    // user.user.restrictions.vegan,
-    // user.user.restrictions.porkFree]);
+    }, [user.location.latitude,
+    user.user.allergies.treeNuts,
+    user.user.allergies.dairy,
+    user.user.allergies.eggs,
+    user.user.allergies.peanuts,
+    user.user.allergies.shellFish,
+    user.user.allergies.soy,
+    user.user.allergies.wheat,
+    user.user.restrictions.beefFree,
+    user.user.restrictions.kosher,
+    user.user.restrictions.pescatarian,
+    user.user.restrictions.vegetarian,
+    user.user.restrictions.vegan,
+    user.user.restrictions.porkFree]);
+
 
     async function fetchOrderHistory() {
-        let response = await get(`/users/:uid/orders`, {})
-        dispatch(setOrderHistory(ORDER_HISTORY_DUMMY))
+        let response = await get(`/users/:uid/orders`, {});
+        dispatch(setOrderHistory(ORDER_HISTORY_DUMMY));
     }
-    useEffect(() => { fetchOrderHistory(); }, [])
+    useEffect(() => { fetchOrderHistory(); }, []);
 
     const layout = useWindowDimensions();
 
@@ -86,7 +87,7 @@ export default function HomeScreen({ navigation }) {
             onIndexChange={setIndex}
             initialLayout={{ width: layout.width, height: 400 }}
         />
-        {userProfile ? <ProfileScreen closeProfileScreen={() => { setUserProfile(false) }} navigation={navigation} /> : null}
+        {userProfile ? <ProfileScreen closeProfileScreen={() => { setUserProfile(false); }} navigation={navigation} /> : null}
     </View>
     );
 }

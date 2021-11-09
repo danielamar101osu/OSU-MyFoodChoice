@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, ActivityIndicator } from 'react-native';
-import * as firebase from 'firebase'
+import * as firebase from 'firebase';
 import { CommonActions } from '@react-navigation/native';
 import { get } from '../../services/networking/network';
 import { useDispatch } from 'react-redux';
@@ -11,36 +11,44 @@ import * as Location from 'expo-location';
 
 export default function LoadingScreen({ navigation }) {
   const dispatch = useDispatch();
-  useEffect(() => {
-    firebase.auth().onAuthStateChanged(async (u) => {
-      if (u) {
-        let user = await get("/users/:uid", {});
-        if (!user) {
-          navigation.dispatch(
-            CommonActions.reset({
-              index: 1,
-              routes: [{ name: "Login" }],
-            })
-          );
-        } else {
-          dispatch(setUser(user));
-          navigation.dispatch(
-            CommonActions.reset({
-              index: 1,
-              routes: [{ name: "Home" }],
-            })
-          );
-        }
-      } else {
+
+  async function checkStatusAndLogin(u, loginScreen) {
+    console.log('checking Status');
+    if (u) {
+      console.log('user found');
+      let user = await get("/users/:uid", {});
+      if (!user) {
         navigation.dispatch(
           CommonActions.reset({
             index: 1,
             routes: [{ name: "Login" }],
           })
         );
+      } else {
+        dispatch(setUser(user));
+        navigation.dispatch(
+          CommonActions.reset({
+            index: 1,
+            routes: [{ name: "Home" }],
+          })
+        );
       }
-    });
-  }, [])
+    } else if (loginScreen) {
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 1,
+          routes: [{ name: "Login" }],
+        })
+      );
+    }
+  }
+
+  useEffect(() => {
+    const unsubscribe = firebase.auth().onAuthStateChanged((u) => {
+      unsubscribe();
+      checkStatusAndLogin(u, true);
+    }, (e) => { console.log('error', e); }, (c) => { console.log('complete', c); });
+  }, []);
 
   useEffect(() => {
     (async () => {
@@ -56,7 +64,7 @@ export default function LoadingScreen({ navigation }) {
         longitude: location.coords.longitude,
         latitudeDelta: 0.02,
         longitudeDelta: 0.02,
-      }))
+      }));
     })();
   }, []);
   return (

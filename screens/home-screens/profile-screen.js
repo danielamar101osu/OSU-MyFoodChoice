@@ -16,7 +16,7 @@ export default function ProfileScreen({ closeProfileScreen, navigation }) {
     const [showEditModal, setShowEditModal] = useState([])
     const [editValues, setEditValues] = useState({})
 
-        //Height Feet dropdown data
+    //Height Feet dropdown data
     const [heightInchOpen, setHeightInchOpen] = useState(false);
     const [heightInchValue, setHeightInchValue] = useState(null);
     const [heightInchItem, setHeightInchItem] = useState([
@@ -47,11 +47,11 @@ export default function ProfileScreen({ closeProfileScreen, navigation }) {
 
 
     var heightFoot = Math.trunc(user.height / 12);
-    var heightInch =  user.height % 12;
+    var heightInch = user.height % 12;
     const heightFootStr = heightFoot.toString() + ' ft'
     const heightInchStr = heightInch.toString() + ' in'
     console.log('Set heights to defaultvalues')
-    
+
 
     async function signOut() {
         try {
@@ -94,7 +94,7 @@ export default function ProfileScreen({ closeProfileScreen, navigation }) {
                             style={{ backgroundColor: 'white', flexDirection: 'row', width: '100%', justifyContent: 'space-between', paddingVertical: 7, marginVertical: 5, paddingHorizontal: 20, alignItems: 'center', borderRadius: 20 }}>
                             <Text style={{ color: 'black', fontSize: 20 }}>Height </Text>
                             <DropDownPicker
-                                placeholder= {heightFootStr}
+                                placeholder={heightFootStr}
                                 zIndex={1000}
                                 zIndexInverse={3000}
                                 open={heightFootOpen}
@@ -115,9 +115,9 @@ export default function ProfileScreen({ closeProfileScreen, navigation }) {
                                     console.log(editValues)
                                     put('/users/:uid', editValues)
 
-                                    }
-                                    }
-                             />
+                                }
+                                }
+                            />
                             <DropDownPicker
                                 placeholder={heightInchStr}
                                 zIndex={1000}
@@ -138,7 +138,7 @@ export default function ProfileScreen({ closeProfileScreen, navigation }) {
                                     setEditValues(temp)
                                     console.log(editValues)
                                     put('/users/:uid', editValues)
-                                    
+
                                 }
                                 }
                             />
@@ -210,6 +210,7 @@ export default function ProfileScreen({ closeProfileScreen, navigation }) {
                                 <Switch value={user.restrictions[el]} onChange={() => {
                                     let val = { restrictions: {} }
                                     val.restrictions[el] = !user.restrictions[el]
+                                    console.log(val)
                                     put('/users/:uid', val)
 
                                     dispatch(updateRestriction(el))

@@ -10,12 +10,9 @@ export default function LoginScreen({ navigation }) {
   const [password, setPassword] = useState('')
   async function signIn() {
 
-    console.log(`Email: ${email} and Password is: ${password}`)
     try {
       await firebase.auth().signInWithEmailAndPassword(email, password)
-      console.log(`firebase.auth().currentUser.uid returns ${firebase.auth().currentUser.uid}`)
-      let user = await get('/users/:uid', {})
-      // navigation.navigate('Home')
+      navigation.navigate('Loading')
     } catch (e) {
       console.log(e)
     }
