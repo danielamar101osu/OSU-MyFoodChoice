@@ -1,20 +1,20 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, Switch, ScrollView, Modal, TextInput } from 'react-native';
 import { Ionicons, Feather } from '@expo/vector-icons';
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux';
 import { CommonActions } from '@react-navigation/native';
 import { BlurView } from 'expo-blur';
 import ProfileInitials from '../../components/profile-initials';
-import * as firebase from 'firebase'
+import * as firebase from 'firebase';
 import { updateAllergy, updateRestriction, updateUser } from '../../redux/actions/user-action';
 import { put } from '../../services/networking/network';
 import DropDownPicker from 'react-native-dropdown-picker';
 
 export default function ProfileScreen({ closeProfileScreen, navigation }) {
-    const user = useSelector(state => state.user.user)
-    const dispatch = useDispatch()
-    const [showEditModal, setShowEditModal] = useState([])
-    const [editValues, setEditValues] = useState({})
+    const user = useSelector(state => state.user.user);
+    const dispatch = useDispatch();
+    const [showEditModal, setShowEditModal] = useState([]);
+    const [editValues, setEditValues] = useState({});
 
     //Height Feet dropdown data
     const [heightInchOpen, setHeightInchOpen] = useState(false);
@@ -46,16 +46,9 @@ export default function ProfileScreen({ closeProfileScreen, navigation }) {
     ]);
 
 
-    var heightFoot = Math.trunc(user.height / 12);
-    var heightInch = user.height % 12;
-    const heightFootStr = heightFoot.toString() + ' ft'
-    const heightInchStr = heightInch.toString() + ' in'
-    console.log('Set heights to defaultvalues')
-
-
     async function signOut() {
         try {
-            await firebase.auth().signOut()
+            await firebase.auth().signOut();
             navigation.dispatch(
                 CommonActions.reset({
                     index: 1,
@@ -64,9 +57,9 @@ export default function ProfileScreen({ closeProfileScreen, navigation }) {
                     ],
                 })
             );
-            console.log('signed out.')
+            console.log('signed out.');
         } catch (e) {
-            console.log(e)
+            console.log(e);
         }
     }
 
@@ -91,12 +84,10 @@ export default function ProfileScreen({ closeProfileScreen, navigation }) {
                         </View>
                         <View
                             key={2}
-                            style={{ backgroundColor: 'white', flexDirection: 'row', width: '100%', justifyContent: 'space-between', paddingVertical: 7, marginVertical: 5, paddingHorizontal: 20, alignItems: 'center', borderRadius: 20 }}>
+                            style={{ backgroundColor: 'white', flexDirection: 'row', width: '100%', justifyContent: 'space-between', paddingVertical: 7, marginVertical: 5, paddingHorizontal: 20, alignItems: 'center', borderRadius: 20, zIndex: 1 }}>
                             <Text style={{ color: 'black', fontSize: 20 }}>Height </Text>
                             <DropDownPicker
-                                placeholder={heightFootStr}
-                                zIndex={1000}
-                                zIndexInverse={3000}
+                                placeholder={Math.trunc(user.height / 12).toString() + ' ft'}
                                 open={heightFootOpen}
                                 value={heightFootValue}
                                 items={heightFootItem}
@@ -106,22 +97,23 @@ export default function ProfileScreen({ closeProfileScreen, navigation }) {
                                 listMode="SCROLLVIEW"
                                 containerStyle={{ width: "30%", opacity: 1 }}
                                 dropDownContainerStyle={{ opacity: 1, marginBottom: 20, backgroundColor: '#e9e1c4' }}
-                                style={{ marginVertical: 10, borderRadius: 5, borderWidth: 1, height: 50, padding: 0, flex: 1, opacity: 1 }}
+                                style={{ marginVertical: 10, borderRadius: 5, borderWidth: 1, height: 50, padding: 0, flex: 1 }}
                                 onChangeValue={(val) => {
-                                    heightFoot = val
-                                    let temp = { ...editValues }
-                                    temp['height'] = ((parseInt(val) * 12) + parseInt(heightInch)).toString();
-                                    setEditValues(temp)
-                                    console.log(editValues)
-                                    put('/users/:uid', editValues)
+                                    let heightFoot = val;
+                                    let heightInch = user.height % 12;
+                                    let temp = { ...editValues };
+                                    temp['height'] = ((parseInt(heightFoot) * 12) + parseInt(heightInch)).toString();
+
+                                    //update collection
+                                    put('/users/:uid', temp);
+                                    //update redux
+                                    dispatch(updateUser(temp));
 
                                 }
                                 }
                             />
                             <DropDownPicker
-                                placeholder={heightInchStr}
-                                zIndex={1000}
-                                zIndexInverse={3000}
+                                placeholder={(user.height % 12).toString() + ' in'}
                                 open={heightInchOpen}
                                 value={heightInchValue}
                                 items={heightInchItem}
@@ -130,14 +122,19 @@ export default function ProfileScreen({ closeProfileScreen, navigation }) {
                                 setItems={setHeightInchItem}
                                 listMode="SCROLLVIEW"
                                 containerStyle={{ width: "30%" }}
-                                style={{ marginVertical: 10, borderRadius: 5, borderWidth: 1, height: 50, padding: 0, flex: 1, marginStart: 4, marginEnd: 4 }}
+                                dropDownContainerStyle={{ backgroundColor: '#e9e1c4' }}
+                                style={{ marginVertical: 10, borderRadius: 5, borderWidth: 1, height: 50, padding: 0, flex: 1 }}
                                 onChangeValue={(val) => {
-                                    let temp = { ...editValues }
-                                    heightInch = val
-                                    temp['height'] = ((parseInt(heightFoot) * 12) + parseInt(val)).toString();
-                                    setEditValues(temp)
-                                    console.log(editValues)
-                                    put('/users/:uid', editValues)
+                                    let temp = { ...editValues };
+                                    let heightFoot = Math.trunc(user.height / 12);
+                                    let heightInch = val;
+
+                                    temp['height'] = ((parseInt(heightFoot) * 12) + parseInt(heightInch)).toString();
+
+                                    //Update collection
+                                    put('/users/:uid', temp);
+                                    //update redux
+                                    dispatch(updateUser(temp));
 
                                 }
                                 }
@@ -195,10 +192,10 @@ export default function ProfileScreen({ closeProfileScreen, navigation }) {
                                 style={{ backgroundColor: 'white', flexDirection: 'row', width: '100%', justifyContent: 'space-between', paddingVertical: 7, marginVertical: 5, paddingHorizontal: 20, alignItems: 'center', borderRadius: 20 }}>
                                 <Text style={{ color: 'black', fontSize: 20 }}>{el.split('').map((letter, ind) => letter == letter.toLowerCase() ? (ind == 0 ? letter.toUpperCase() : letter) : ' ' + letter).join('')}</Text>
                                 <Switch value={user.allergies[el]} onChange={() => {
-                                    let val = { allergies: {} }
-                                    val.allergies[el] = !user.allergies[el]
-                                    put('/users/:uid', val)
-                                    dispatch(updateAllergy(el))
+                                    let val = { allergies: {} };
+                                    val.allergies[el] = !user.allergies[el];
+                                    put('/users/:uid', val);
+                                    dispatch(updateAllergy(el));
                                 }} />
                             </View>)}
                         <Text style={{ fontFamily: 'Nunito-SemiBold', fontSize: 30, marginTop: 10 }}>Dietary Restrictions</Text>
@@ -208,12 +205,12 @@ export default function ProfileScreen({ closeProfileScreen, navigation }) {
                                 style={{ backgroundColor: 'white', flexDirection: 'row', width: '100%', justifyContent: 'space-between', paddingVertical: 7, marginVertical: 5, paddingHorizontal: 20, alignItems: 'center', borderRadius: 20 }}>
                                 <Text style={{ color: 'black', fontSize: 20 }}>{el.split('').map((letter, ind) => letter == letter.toLowerCase() ? (ind == 0 ? letter.toUpperCase() : letter) : ' ' + letter).join('')}</Text>
                                 <Switch value={user.restrictions[el]} onChange={() => {
-                                    let val = { restrictions: {} }
-                                    val.restrictions[el] = !user.restrictions[el]
-                                    console.log(val)
-                                    put('/users/:uid', val)
+                                    let val = { restrictions: {} };
+                                    val.restrictions[el] = !user.restrictions[el];
+                                    console.log(val);
+                                    put('/users/:uid', val);
 
-                                    dispatch(updateRestriction(el))
+                                    dispatch(updateRestriction(el));
                                 }} />
                             </View>)}
                         <TouchableOpacity onPress={signOut} style={{ paddingHorizontal: 30, paddingVertical: 10, backgroundColor: 'rgba(200,0,0,.8)', borderRadius: 10, justifyContent: 'center', alignItems: 'center', marginHorizontal: 60, marginTop: 34, marginBottom: 50 }}>
@@ -234,27 +231,27 @@ export default function ProfileScreen({ closeProfileScreen, navigation }) {
                         {showEditModal.map((el, ind) => (<View id={el.key}>
                             <Text style={{ fontSize: 20, fontFamily: 'Nunito-Regular', marginLeft: 10, marginTop: ind == 0 ? 40 : 10 }}>Edit your {el.label}:</Text>
                             <TextInput keyboardType={el.type} returnKeyType='done' defaultValue={user[el.key] + ''} onChangeText={(val) => {
-                                let temp = { ...editValues }
-                                temp[el.key] = val
-                                setEditValues(temp)
+                                let temp = { ...editValues };
+                                temp[el.key] = val;
+                                setEditValues(temp);
                             }} style={{ height: 50, backgroundColor: 'white', marginVertical: 5, marginHorizontal: 20, borderRadius: 20, paddingHorizontal: 10, fontSize: 20, fontFamily: 'Nunito-Regular' }} />
 
                         </View>))}
                         <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', marginTop: 40 }}>
                             <TouchableOpacity
                                 onPress={() => {
-                                    setShowEditModal([])
-                                    setEditValues({})
+                                    setShowEditModal([]);
+                                    setEditValues({});
                                 }}
                                 style={{ paddingHorizontal: 30, paddingVertical: 10, backgroundColor: 'rgba(200,0,0,.7)', width: '40%', borderRadius: 10, justifyContent: 'center', alignItems: 'center' }}>
                                 <Text style={{ fontFamily: 'Nunito-Light', fontSize: 25, color: 'white' }}>cancel</Text>
                             </TouchableOpacity>
                             <TouchableOpacity onPress={() => {
-                                setShowEditModal([])
+                                setShowEditModal([]);
 
-                                console.log('Edited Profile values', editValues)
-                                put('/users/:uid', editValues)
-                                dispatch(updateUser(editValues))
+                                console.log('Edited Profile values', editValues);
+                                put('/users/:uid', editValues);
+                                dispatch(updateUser(editValues));
                             }} style={{ paddingHorizontal: 30, paddingVertical: 10, backgroundColor: 'rgba(0,200,0,.9)', width: '40%', borderRadius: 10, justifyContent: 'center', alignItems: 'center' }}>
                                 <Text style={{ fontFamily: 'Nunito-Light', fontSize: 25, color: 'white' }}>save</Text>
                             </TouchableOpacity>
