@@ -10,10 +10,6 @@ import { updateAllergy, updateRestriction, updateUser } from '../../redux/action
 import { put } from '../../services/networking/network';
 import DropDownPicker from 'react-native-dropdown-picker';
 
-async function setHeightValues(){
-
-    
-}
 
 export default function ProfileScreen({ closeProfileScreen, navigation }) {
     const user = useSelector(state => state.user.user)
@@ -50,13 +46,6 @@ export default function ProfileScreen({ closeProfileScreen, navigation }) {
         { label: '8 ft', value: '8' },
     ]);
 
-
-    var heightFoot = Math.trunc(user.height / 12);
-    var heightInch =  user.height % 12;
-    const heightFootStr = heightFoot.toString() + ' ft'
-    const heightInchStr = heightInch.toString() + ' in'
-    console.log('Set heights to defaultvalues')
-    
 
     async function signOut() {
         try {
@@ -99,7 +88,7 @@ export default function ProfileScreen({ closeProfileScreen, navigation }) {
                             style={{ backgroundColor: 'white', flexDirection: 'row', width: '100%', justifyContent: 'space-between', paddingVertical: 7, marginVertical: 5, paddingHorizontal: 20, alignItems: 'center', borderRadius: 20 }}>
                             <Text style={{ color: 'black', fontSize: 20 }}>Height </Text>
                             <DropDownPicker
-                                placeholder= {heightFootStr}
+                                placeholder= {Math.trunc(user.height / 12).toString() + ' ft'}
                                 zIndex={1000}
                                 zIndexInverse={3000}
                                 open={heightFootOpen}
@@ -113,18 +102,21 @@ export default function ProfileScreen({ closeProfileScreen, navigation }) {
                                 dropDownContainerStyle={{ opacity: 1, marginBottom: 20, backgroundColor: '#e9e1c4' }}
                                 style={{ marginVertical: 10, borderRadius: 5, borderWidth: 1, height: 50, padding: 0, flex: 1, opacity: 1 }}
                                 onChangeValue={(val) => {
-                                    heightFoot = val
+                                    let heightFoot = val
+                                    let heightInch = user.height % 12;
                                     let temp = { ...editValues }
-                                    temp['height'] = ((parseInt(val) * 12) + parseInt(heightInch)).toString();
-                                    setEditValues(temp)
-                                    console.log(editValues)
-                                    put('/users/:uid', editValues)
+                                    temp['height'] = ((parseInt(heightFoot) * 12) + parseInt(heightInch)).toString();
+                                    
+                                    //update collection
+                                    put('/users/:uid', temp)
+                                    //update redux
+                                    dispatch(updateUser(temp))
 
                                     }
                                     }
                              />
                             <DropDownPicker
-                                placeholder={heightInchStr}
+                                placeholder={(user.height % 12).toString() + ' in'}
                                 zIndex={1000}
                                 zIndexInverse={3000}
                                 open={heightInchOpen}
@@ -138,12 +130,16 @@ export default function ProfileScreen({ closeProfileScreen, navigation }) {
                                 style={{ marginVertical: 10, borderRadius: 5, borderWidth: 1, height: 50, padding: 0, flex: 1, marginStart: 4, marginEnd: 4 }}
                                 onChangeValue={(val) => {
                                     let temp = { ...editValues }
-                                    heightInch = val
-                                    temp['height'] = ((parseInt(heightFoot) * 12) + parseInt(val)).toString();
-                                    setEditValues(temp)
-                                    console.log(editValues)
-                                    put('/users/:uid', editValues)
+                                    let heightFoot = Math.trunc(user.height / 12)
+                                    let heightInch = val
+
+                                    temp['height'] = ((parseInt(heightFoot) * 12) + parseInt(heightInch)).toString();
                                     
+                                    //Update collection
+                                    put('/users/:uid', temp)
+                                    //update redux
+                                    dispatch(updateUser(temp))
+
                                 }
                                 }
                             />
