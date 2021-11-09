@@ -62,7 +62,6 @@ export default function ProfileScreen({ closeProfileScreen, navigation }) {
             console.log(e);
         }
     }
-
     return (
         <BlurView intensity={100} style={{ position: 'absolute', height: "100%", width: "100%" }}>
             <View style={{ paddingTop: 50 }}>

@@ -54,20 +54,21 @@ export default function HomeScreen({ navigation }) {
     user.user.restrictions.vegan,
     user.user.restrictions.porkFree]);
 
-
     async function fetchOrderHistory() {
         let response = await get(`/users/:uid/orders`, {});
         dispatch(setOrderHistory(ORDER_HISTORY_DUMMY));
     }
     useEffect(() => { fetchOrderHistory(); }, []);
-
     const layout = useWindowDimensions();
 
     return (<View style={{ flex: 1 }}>
         <SafeAreaView style={{ flex: 1, justifyContent: 'center' }}>
             <View style={{ justifyContent: 'space-between', flexDirection: 'row', paddingHorizontal: 15 }}>
                 <Text style={{ fontFamily: 'Nunito-SemiBold', fontSize: 45 }}>OSU MyChef</Text>
-                <ProfileInitials showProfile={() => setUserProfile(true)} size={55} />
+                <ProfileInitials showProfile={() => {
+                    console.log('pressed');
+                    setUserProfile(true);
+                }} size={55} />
             </View>
         </SafeAreaView>
         <TabView
