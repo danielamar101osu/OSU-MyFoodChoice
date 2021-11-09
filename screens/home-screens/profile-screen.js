@@ -84,12 +84,10 @@ export default function ProfileScreen({ closeProfileScreen, navigation }) {
                         </View>
                         <View
                             key={2}
-                            style={{ backgroundColor: 'white', flexDirection: 'row', width: '100%', justifyContent: 'space-between', paddingVertical: 7, marginVertical: 5, paddingHorizontal: 20, alignItems: 'center', borderRadius: 20 }}>
+                            style={{ backgroundColor: 'white', flexDirection: 'row', width: '100%', justifyContent: 'space-between', paddingVertical: 7, marginVertical: 5, paddingHorizontal: 20, alignItems: 'center', borderRadius: 20, zIndex: 1 }}>
                             <Text style={{ color: 'black', fontSize: 20 }}>Height </Text>
                             <DropDownPicker
                                 placeholder= {Math.trunc(user.height / 12).toString() + ' ft'}
-                                zIndex={1000}
-                                zIndexInverse={3000}
                                 open={heightFootOpen}
                                 value={heightFootValue}
                                 items={heightFootItem}
@@ -99,7 +97,7 @@ export default function ProfileScreen({ closeProfileScreen, navigation }) {
                                 listMode="SCROLLVIEW"
                                 containerStyle={{ width: "30%", opacity: 1 }}
                                 dropDownContainerStyle={{ opacity: 1, marginBottom: 20, backgroundColor: '#e9e1c4' }}
-                                style={{ marginVertical: 10, borderRadius: 5, borderWidth: 1, height: 50, padding: 0, flex: 1, opacity: 1 }}
+                                style={{ marginVertical: 10, borderRadius: 5, borderWidth: 1, height: 50, padding: 0, flex: 1}}
                                 onChangeValue={(val) => {
                                     let heightFoot = val
                                     let heightInch = user.height % 12;
@@ -116,8 +114,6 @@ export default function ProfileScreen({ closeProfileScreen, navigation }) {
                              />
                             <DropDownPicker
                                 placeholder={(user.height % 12).toString() + ' in'}
-                                zIndex={1000}
-                                zIndexInverse={3000}
                                 open={heightInchOpen}
                                 value={heightInchValue}
                                 items={heightInchItem}
@@ -126,7 +122,8 @@ export default function ProfileScreen({ closeProfileScreen, navigation }) {
                                 setItems={setHeightInchItem}
                                 listMode="SCROLLVIEW"
                                 containerStyle={{ width: "30%" }}
-                                style={{ marginVertical: 10, borderRadius: 5, borderWidth: 1, height: 50, padding: 0, flex: 1, marginStart: 4, marginEnd: 4 }}
+                                dropDownContainerStyle={{ backgroundColor: '#e9e1c4' }}
+                                style={{ marginVertical: 10, borderRadius: 5, borderWidth: 1, height: 50, padding: 0, flex: 1}}
                                 onChangeValue={(val) => {
                                     let temp = { ...editValues }
                                     let heightFoot = Math.trunc(user.height / 12)
