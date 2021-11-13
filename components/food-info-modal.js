@@ -3,30 +3,32 @@ import { StyleSheet, Text, Animated, View, ScrollView, Alert, Modal, TouchableOp
 import { Ionicons } from '@expo/vector-icons';
 import MapView from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { google_api_key } from '../config';
 import NutritionLabel from './nutrition-label';
-import { post } from '../services/networking/network';
+import { get, post } from '../services/networking/network';
+import { setOrderHistory } from '../redux/actions/food-action';
 
 export default function FoodInfoModal({ selectedItem, modalVisible, setModalVisible, locationData }) {
-    const user = useSelector(state => state.user)
-    const meals = useSelector(state => state.food.meals)
-    const [alert, setAlert] = useState('Order Saved!')
-    const [distance, setDistance] = useState(0)
+    const user = useSelector(state => state.user);
+    const meals = useSelector(state => state.food.meals);
+    const [alert, setAlert] = useState('Order Saved!');
+    const [distance, setDistance] = useState(0);
     const fadeAnim = useRef(new Animated.Value(100)).current;
-
+    const dispatch = useDispatch();
     const [region, setRegion] = useState({
         latitude: 40,
         longitude: -83,
         latitudeDelta: 0.04,
         longitudeDelta: 0.0421,
-    })
+    });
     const saveFood = async () => {
         setModalVisible(!modalVisible);
-        console.log({ locationId: locationData, foodId: selectedItem.id })
-        let res = await post(`/users/:uid/orders`, { location_id: locationData, food_id: selectedItem.id })
-        console.log(res)
-        setAlert(res.includes('Successfully') ? 'Order Saved!' : 'Error saving order')
+        console.log(selectedItem);
+        let res = await post(`/users/:uid/orders`, { location_id: locationData, food_id: selectedItem.id });
+        let orders = await get(`/users/:uid/orders`, {});
+        dispatch(setOrderHistory(ORDER_HISTORY_DUMMY));
+        setAlert(res.includes('Successfully') ? 'Order Saved!' : 'Error saving order');
         Animated.sequence([Animated.spring(fadeAnim, {
             toValue: -80,
             duration: 2000,
@@ -36,12 +38,11 @@ export default function FoodInfoModal({ selectedItem, modalVisible, setModalVisi
             duration: 2000,
             useNativeDriver: true
         })]).start();
-
-    }
+    };
 
     useEffect(() => {
-        setRegion(user.location)
-    }, [user.location])
+        setRegion(user.location);
+    }, [user.location]);
 
     return (
         <View style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: 0 }}>
@@ -94,7 +95,7 @@ export default function FoodInfoModal({ selectedItem, modalVisible, setModalVisi
                                         strokeColor="#BB0000"
                                         strokeWidth={3}
                                         onReady={(d) => {
-                                            setDistance(d.distance * 0.621371)
+                                            setDistance(d.distance * 0.621371);
                                         }}
                                         origin={{
                                             latitude: user.location.latitude, longitude: user.location.longitude
@@ -108,7 +109,7 @@ export default function FoodInfoModal({ selectedItem, modalVisible, setModalVisi
                         <TouchableOpacity
                             onPress={saveFood}
                             style={{
-                                backgroundColor: '#e9e1c4',
+                                backgroundColor: 'rgba(200, 10,10,.9)',
                                 shadowColor: '#000',
                                 shadowOffset: { width: 1, height: 2 },
                                 shadowOpacity: 0.8,

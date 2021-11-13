@@ -226,8 +226,8 @@ export default function ProfileScreen({ closeProfileScreen, navigation }) {
             </TouchableOpacity>
             <Modal transparent={true} visible={showEditModal.length > 0} animationType='slide'>
                 <BlurView intensity={100} style={{ flex: 1, justifyContent: 'flex-end', alignItems: 'center', flexDirection: 'column' }}>
-                    <View style={{ height: "80%", width: '95%', justifyContent: 'flex-start', backgroundColor: '#e9e1c4', borderTopLeftRadius: 20, borderTopRightRadius: 20, }}>
-                        {showEditModal.map((el, ind) => (<View id={el.key}>
+                    <View style={{ height: "80%", width: '95%', justifyContent: 'flex-start', backgroundColor: 'rgba(200, 10,10,.5)', borderTopLeftRadius: 20, borderTopRightRadius: 20, }}>
+                        {showEditModal.map((el, ind) => (<View id={ind}>
                             <Text style={{ fontSize: 20, fontFamily: 'Nunito-Regular', marginLeft: 10, marginTop: ind == 0 ? 40 : 10 }}>Edit your {el.label}:</Text>
                             <TextInput keyboardType={el.type} returnKeyType='done' defaultValue={user[el.key] + ''} onChangeText={(val) => {
                                 let temp = { ...editValues };

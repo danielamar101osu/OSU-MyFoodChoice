@@ -11,6 +11,7 @@ import { get } from '../../services/networking/network';
 import HistoryScreen from './history-screen';
 import ORDER_HISTORY_DUMMY from '../../assets/static/orders';
 import * as firebase from 'firebase';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const renderScene = SceneMap({
     first: DinnerScreen,
@@ -22,6 +23,7 @@ export default function HomeScreen({ navigation }) {
     const [index, setIndex] = useState(0);
     const dispatch = useDispatch();
     const user = useSelector(state => state.user);
+    const locationName = useSelector(state => state.food.meals.location.data.name);
     const [userProfile, setUserProfile] = useState(false);
     const [routes] = useState([
         { key: 'first', title: 'Meal' },
@@ -58,13 +60,20 @@ export default function HomeScreen({ navigation }) {
         let response = await get(`/users/:uid/orders`, {});
         dispatch(setOrderHistory(ORDER_HISTORY_DUMMY));
     }
-    useEffect(() => { fetchOrderHistory(); }, []);
+    useEffect(() => { console.log('fetching'); fetchOrderHistory(); }, []);
     const layout = useWindowDimensions();
 
-    return (<View style={{ flex: 1 }}>
-        <SafeAreaView style={{ flex: 1, justifyContent: 'center' }}>
+    return (<View style={{ flex: 1, backgroundColor: 'white' }}>
+        <SafeAreaView style={{ flex: 1, justifyContent: 'center', backgroundColor: 'white' }}>
             <View style={{ justifyContent: 'space-between', flexDirection: 'row', paddingHorizontal: 15 }}>
-                <Text style={{ fontFamily: 'Nunito-SemiBold', fontSize: 45 }}>OSU MyChef</Text>
+                <View>
+                    <Text style={{ fontFamily: 'Nunito-SemiBold', fontSize: 45 }}>OSU MyChef</Text>
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', alignItems: 'center' }}>
+                        <TouchableOpacity><Text style={{ color: 'rgba(200, 10,10,.9)', fontSize: 40 }}>‹</Text></TouchableOpacity>
+                        <Text style={{ fontFamily: 'Nunito-Light', fontSize: 25, marginTop: 7 }}>{locationName}</Text>
+                        <TouchableOpacity><Text style={{ color: 'rgba(200, 10,10,.9)', fontSize: 40 }}>›</Text></TouchableOpacity>
+                    </View>
+                </View>
                 <ProfileInitials showProfile={() => {
                     console.log('pressed');
                     setUserProfile(true);
@@ -72,17 +81,18 @@ export default function HomeScreen({ navigation }) {
             </View>
         </SafeAreaView>
         <TabView
-            style={{ flex: 8, paddingTop: 0 }}
+            style={{ flex: 5, paddingTop: 0 }}
             renderTabBar={props => <TabBar {...props}
-                indicatorStyle={{ height: 5 }}
-                style={{ backgroundColor: 'white', margin: 0 }}
-                renderLabel={({ route, color }) => (
-                    <View style={{ flex: 1, justifyContent: 'flex-end', margin: 0 }}>
-                        <Text style={{ color: '#333333', fontFamily: 'Nunito-Light', fontSize: 20 }}>
+                indicatorStyle={{ height: '80%', backgroundColor: 'rgba(200, 10,10,.5)', borderRadius: 10, width: '33%', marginBottom: '1%' }}
+                style={{ backgroundColor: 'white', marginHorizontal: 5, padding: 0 }}
+                renderLabel={({ route, focused, color }) => (
+                    <View style={{ flex: 1, margin: 0, width: 100, alignItems: 'center' }}>
+                        <Text style={{ color: '#333333', fontFamily: focused ? 'Nunito-Bold' : 'Nunito-Light', fontSize: 20 }}>
                             {route.title}
                         </Text>
                     </View>
                 )} />}
+
             navigationState={{ index, routes }}
             renderScene={renderScene}
             onIndexChange={setIndex}

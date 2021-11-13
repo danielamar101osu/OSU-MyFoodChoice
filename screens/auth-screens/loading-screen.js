@@ -26,12 +26,15 @@ export default function LoadingScreen({ navigation }) {
         );
       } else {
         dispatch(setUser(user));
-        navigation.dispatch(
-          CommonActions.reset({
-            index: 1,
-            routes: [{ name: "Home" }],
-          })
-        );
+        setTimeout(() => {
+          navigation.dispatch(
+            CommonActions.reset({
+              index: 1,
+              routes: [{ name: "Home" }],
+            })
+          );
+        }, 1000);
+
       }
     } else if (loginScreen) {
       navigation.dispatch(
@@ -68,7 +71,7 @@ export default function LoadingScreen({ navigation }) {
     })();
   }, []);
   return (
-    <View style={{ justifyContent: 'center', alignItems: 'center', flex: 1, backgroundColor: '#e9e1c4' }}>
+    <View style={{ justifyContent: 'center', alignItems: 'center', flex: 1, backgroundColor: 'white' }}>
       <Text style={{ fontFamily: 'Nunito-Bold', fontSize: 20, marginBottom: 10 }}>OSU My Food Choice</Text>
       <ActivityIndicator size='large' style={{ marginTop: 10 }} />
     </View>

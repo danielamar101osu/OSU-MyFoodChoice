@@ -38,11 +38,19 @@ export default function HistoryScreen() {
         }}>
             < Swiper showsButtons={true}
                 loadMinimalSize={4}
+                dotColor={'rgba(200, 10,10,.2)'}
+                activeDotColor={'rgba(200, 10,10,.5)'}
                 paginationStyle={{ flex: 1, top: 10, bottom: null }}
                 style={{
                     justifyContent: 'center', alignItems: 'center',
                 }
-                }>
+                }
+                buttonWrapperStyle={{
+                    alignItems: 'flex-start',
+                    paddingBottom: 50,
+                }}
+                nextButton={<Text style={{ color: 'rgba(200, 10,10,.9)', fontSize: 90 }}>›</Text>}
+                prevButton={<Text style={{ color: 'rgba(200, 10,10,.9)', fontSize: 90 }}>‹</Text>}>
                 {Object.keys(orders).map((el, ind) => {
                     const title = NUTRIENTS.find(nut => el.toLowerCase().includes(nut.toLowerCase()));
                     return <ScrollView key={title}>
