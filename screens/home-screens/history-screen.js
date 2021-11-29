@@ -1,98 +1,119 @@
-import { Picker } from '@react-native-picker/picker';
-import React, { useState } from 'react';
-import { Modal, Text, useWindowDimensions, View } from 'react-native';
-import { LineChart } from 'react-native-chart-kit';
+import React, { useState, useEffect } from 'react';
+import { Modal, Text, View } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
-import Swiper from 'react-native-swiper';
 import { useSelector } from 'react-redux';
-import GraphSwitcher from '../../components/graph-switcher';
 import TotalsHistory from '../../components/totals-history';
-
-const NUTRIENTS = [
-    'Calories',
-    'Carbs',
-    'Sugars',
-    'Fats',
-    'Protein',
-    'Iron',
-    'Sodium',
-];
+import { Ionicons } from '@expo/vector-icons';
 
 const chartConfig = {
-    backgroundGradientFrom: '#FFFFFF',
-    backgroundGradientTo: '#FFFFFF',
-    color: (opacity = 1) => `rgba(255, 16, 13, ${opacity})`,
-    strokeWidth: 2 // optional, default 3
+  backgroundGradientFrom: '#FFFFFF',
+  backgroundGradientTo: '#FFFFFF',
+  color: (opacity = 1) => `rgba(255, 16, 13, ${opacity})`,
+  strokeWidth: 2, // optional, default 3
 };
 
-
 export default function HistoryScreen() {
-    const [selectedNutrient, setSelectedNutrient] = useState('Calories');
-    const orders = useSelector(state => state.food.orders);
-
-    return (
-        <View style={{
-            flex: 1,
-            justifyContent: 'flex-start',
-            alignItems: 'flex-start',
-        }}>
-            < Swiper showsButtons={true}
-                loadMinimalSize={4}
-                dotColor={'rgba(200, 10,10,.2)'}
-                activeDotColor={'rgba(200, 10,10,.5)'}
-                paginationStyle={{ flex: 1, top: 10, bottom: null }}
-                style={{
-                    justifyContent: 'center', alignItems: 'center',
-                }
-                }
-                buttonWrapperStyle={{
-                    alignItems: 'flex-start',
-                    paddingBottom: 50,
+  const [selectedNutrient, setSelectedNutrient] = useState(null);
+  const orders = useSelector((state) => state.food.orders);
+  useEffect(() => {
+    console.log(selectedNutrient);
+  }, [selectedNutrient]);
+  return (
+    <View
+      style={{
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        alignItems: 'flex-start',
+      }}
+    >
+      <Modal visible={selectedNutrient !== null} style={{ flex: 1 }}>
+        <View style={{ alignItems: 'flex-end', paddingTop: 40 }}>
+          <TouchableOpacity
+            style={{ padding: 10 }}
+            onPress={() => {
+              setSelectedNutrient(null);
+            }}
+          >
+            <Ionicons name="ios-close" size={40} color="black" />
+          </TouchableOpacity>
+        </View>
+        {selectedNutrient !== null ? (
+          <ScrollView>
+            <View style={{ flex: 1 }}>
+              <Text
+                key="tot"
+                style={{ fontSize: 50, fontFamily: 'Nunito-SemiBold', width: '100%', textAlign: 'center', borderBottomColor: 'black', marginTop: 20 }}
+              >
+                {selectedNutrient
+                  .replace(selectedNutrient.charAt(0), selectedNutrient.charAt(0).toUpperCase())
+                  .split(/(?=[A-Z])/)
+                  .join(' ')}
+              </Text>
+              <TotalsHistory
+                key="data"
+                data={[
+                  { label: orders[selectedNutrient].today.labels[0], value: Math.round(orders[selectedNutrient].today.datasets[0]*10)/10 + 'g' },
+                  {
+                    labels: orders[selectedNutrient].week.labels.map((label) => label.split(' ')[1]),
+                    datasets: [
+                      {
+                        data: orders[selectedNutrient].week.datasets,
+                        color: (opacity = 1) => `rgba(50, 50, 50, ${opacity})`, // optional
+                        strokeWidth: 2, // optional
+                      },
+                    ],
+                  },
+                  {
+                    labels: orders[selectedNutrient].month.labels.map((label, ind) => (ind % 3 === 0 ? label : '')),
+                    datasets: [
+                      {
+                        data: orders[selectedNutrient].month.datasets,
+                        color: (opacity = 1) => `rgba(50, 50, 50, ${opacity})`, // optional
+                        strokeWidth: 2, // optional
+                      },
+                    ],
+                  },
+                  {
+                    labels: orders[selectedNutrient].year.labels.map((label) => label.substring(0, 3)),
+                    datasets: [
+                      {
+                        data: orders[selectedNutrient].year.datasets,
+                        color: (opacity = 1) => `rgba(50, 50, 50, ${opacity})`, // optional
+                        strokeWidth: 2, // optional
+                      },
+                    ],
+                  },
+                ]}
+                chartConfig={chartConfig}
+              />
+            </View>
+          </ScrollView>
+        ) : null}
+      </Modal>
+      <ScrollView>
+        {Object.keys(orders)
+          .filter((key) => !key.includes('ercent'))
+          .map((el, ind) => {
+            return (
+              <TouchableOpacity
+                key={ind}
+                onPress={() => {
+                  setSelectedNutrient(el);
                 }}
-                nextButton={<Text style={{ color: 'rgba(200, 10,10,.9)', fontSize: 90 }}>›</Text>}
-                prevButton={<Text style={{ color: 'rgba(200, 10,10,.9)', fontSize: 90 }}>‹</Text>}>
-                {Object.keys(orders).map((el, ind) => {
-                    const title = NUTRIENTS.find(nut => el.toLowerCase().includes(nut.toLowerCase()));
-                    return <ScrollView key={title}>
-                        <View style={{ flex: 1, marginTop: 10 }}>
-                            <Text key='tot' style={{ fontSize: 50, fontFamily: 'Nunito-SemiBold', width: '100%', textAlign: 'center', borderBottomColor: 'black', marginTop: 20 }}>{title}</Text>
-                            <TotalsHistory key="data" data={[
-                                { label: title, value: orders[el].day + 'g' },
-                                {
-                                    labels: orders[el].week.labels,
-                                    datasets: orders[el].week.datasets.map((dataset) => {
-                                        return {
-                                            data: dataset,
-                                            color: (opacity = 1) => `rgba(50, 50, 50, ${opacity})`, // optional
-                                            strokeWidth: 2 // optional
-                                        };
-                                    })
-                                },
-                                {
-                                    labels: orders[el].month.labels,
-                                    datasets: orders[el].month.datasets.map((dataset) => {
-                                        return {
-                                            data: dataset,
-                                            color: (opacity = 1) => `rgba(50, 50, 50, ${opacity})`, // optional
-                                            strokeWidth: 2 // optional
-                                        };
-                                    })
-                                },
-                                {
-                                    labels: orders[el].ytd.labels,
-                                    datasets: orders[el].ytd.datasets.map((dataset) => {
-                                        return {
-                                            data: dataset,
-                                            color: (opacity = 1) => `rgba(50, 50, 50, ${opacity})`, // optional
-                                            strokeWidth: 2 // optional
-                                        };
-                                    })
-                                }
-                            ]} chartConfig={chartConfig} />
-                        </View>
-                    </ScrollView>;
-                })}
-            </Swiper >
-        </View >
-    );
+                style={{ margin: 10, padding: 10, borderColor: 'red', borderWidth: 1, borderRadius: 10, paddingVertical: 20 }}
+              >
+                <Text style={{ fontSize: 20, fontFamily: 'Nunito-Light' }}>
+                  {el
+                    .replace(el.charAt(0), el.charAt(0).toUpperCase())
+                    .split(/(?=[A-Z])/)
+                    .join(' ')}
+                </Text>
+              </TouchableOpacity>
+            );
+          })}
+        <View style={{ marginBottom: 30 }}></View>
+      </ScrollView>
+    </View>
+  );
 }

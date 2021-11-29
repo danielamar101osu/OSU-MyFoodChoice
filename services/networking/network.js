@@ -28,6 +28,7 @@ export async function put(path, data) {
 export async function post(path, data) {
   try {
     console.log(`post: ${ENDPOINT}${path.replace(':uid', firebase.auth().currentUser.uid)}`)
+    console.log(data)
     let res = await axios.post(`${ENDPOINT}${path.replace(':uid', firebase.auth().currentUser.uid)}`, data)
     return res.data;
   } catch (e) {

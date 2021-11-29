@@ -1,5 +1,5 @@
 import React, { } from 'react';
-import { StyleSheet, Text, useWindowDimensions, View } from 'react-native';
+import { Text, useWindowDimensions, View } from 'react-native';
 import { LineChart } from 'react-native-chart-kit';
 
 export default function TotalsHistory({ data, chartConfig }) {
@@ -10,7 +10,7 @@ export default function TotalsHistory({ data, chartConfig }) {
             <Text style={{ fontFamily: 'Nunito-Regular', fontSize: 20, marginBottom: 10, marginLeft: 20 }}>Total {data[0].label} - {data[0].value}</Text>
 
         </View>
-        <View style={{ padding: 10, justifyContent: 'center', alignItems: 'center' }}>
+         <View style={{ padding: 10, justifyContent: 'center', alignItems: 'center' }}>
             <Text style={{ fontFamily: 'Nunito-SemiBold', fontSize: 30, marginBottom: 10 }}>This Week</Text>
             <LineChart
                 style={{ borderRadius: 10 }}
@@ -21,7 +21,7 @@ export default function TotalsHistory({ data, chartConfig }) {
                 chartConfig={chartConfig}
             />
         </View>
-        <View style={{ padding: 10, justifyContent: 'center', alignItems: 'center' }}>
+       <View style={{ padding: 10, justifyContent: 'center', alignItems: 'center' }}>
             <Text style={{ fontFamily: 'Nunito-SemiBold', fontSize: 30, marginBottom: 10 }}>This Month</Text>
             <LineChart
                 style={{ borderRadius: 10 }}
@@ -37,7 +37,7 @@ export default function TotalsHistory({ data, chartConfig }) {
             <LineChart
                 style={{ borderRadius: 10, marginBottom: 50 }}
                 bezier
-                data={data[2]}
+                data={data[3]}
                 width={width - 40}
                 height={220}
                 chartConfig={chartConfig}
