@@ -21,6 +21,10 @@ export default function NutritionLabel({ data }) {
                 <Text style={{ fontFamily: 'Nunito-Light', fontSize: 20, marginLeft: 20 }}>{data.sugarTotalGram}g</Text>
             </View>
             <View style={{ borderBottomWidth: 1, flexDirection: 'row', justifyContent: 'flex-start', marginVertical: 5 }}>
+                <Text style={{ fontFamily: 'Nunito-Regular', fontSize: 20, marginLeft: 25 }}>Added Sugars</Text>
+                <Text style={{ fontFamily: 'Nunito-Light', fontSize: 20, marginLeft: 20 }}>{data.addedSugarGram}g</Text>
+            </View>
+            <View style={{ borderBottomWidth: 1, flexDirection: 'row', justifyContent: 'flex-start', marginVertical: 5 }}>
                 <Text style={{ fontFamily: 'Nunito-SemiBold', fontSize: 20, marginLeft: 10 }}>Total Fat</Text>
                 <Text style={{ fontFamily: 'Nunito-Light', fontSize: 20, marginLeft: 20 }}>{data.totalFatGram}g</Text>
             </View>
@@ -38,11 +42,23 @@ export default function NutritionLabel({ data }) {
             </View>
             <View style={{ borderBottomWidth: 1, flexDirection: 'row', justifyContent: 'flex-start', marginVertical: 5 }}>
                 <Text style={{ fontFamily: 'Nunito-Regular', fontSize: 20, marginLeft: 25 }}>% of daily allowance</Text>
-                <Text style={{ fontFamily: 'Nunito-Light', fontSize: 20, marginLeft: 20 }}>{data.proteinPercent}g</Text>
+                <Text style={{ fontFamily: 'Nunito-Light', fontSize: 20, marginLeft: 20 }}>{data.proteinPercent}%</Text>
+            </View>
+            <View style={{ borderBottomWidth: 1, flexDirection: 'row', justifyContent: 'flex-start', marginVertical: 5 }}>
+                <Text style={{ fontFamily: 'Nunito-SemiBold', fontSize: 20, marginLeft: 10 }}>Total Iron</Text>
+                <Text style={{ fontFamily: 'Nunito-Light', fontSize: 20, marginLeft: 20 }}>{data.ironMill}mg</Text>
+            </View>
+            <View style={{ borderBottomWidth: 1, flexDirection: 'row', justifyContent: 'flex-start', marginVertical: 5 }}>
+                <Text style={{ fontFamily: 'Nunito-Regular', fontSize: 20, marginLeft: 25 }}>% of daily allowance</Text>
+                <Text style={{ fontFamily: 'Nunito-Light', fontSize: 20, marginLeft: 20 }}>{data.ironPercent}%</Text>
             </View>
             <View style={{ borderBottomWidth: 1, flexDirection: 'row', justifyContent: 'flex-start', marginVertical: 5 }}>
                 <Text style={{ fontFamily: 'Nunito-SemiBold', fontSize: 20, marginLeft: 10 }}>Sodium</Text>
                 <Text style={{ fontFamily: 'Nunito-Light', fontSize: 20, marginLeft: 20 }}>{data.sodiumMilligram}mg</Text>
+            </View>
+            <View style={{ borderBottomWidth: 1, flexDirection: 'row', justifyContent: 'flex-start', marginVertical: 5 }}>
+                <Text style={{ fontFamily: 'Nunito-Regular', fontSize: 20, marginLeft: 25 }}>% of daily allowance</Text>
+                <Text style={{ fontFamily: 'Nunito-Light', fontSize: 20, marginLeft: 20 }}>{data.sodiumPercent}%</Text>
             </View>
             <View style={{ flexDirection: 'column', justifyContent: 'flex-start', marginVertical: 5, }}>
                 <Text style={{ fontFamily: 'Nunito-SemiBold', fontSize: 25, marginLeft: 10 }}>Ingredients</Text>
