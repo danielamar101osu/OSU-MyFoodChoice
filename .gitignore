@@ -1,7 +1,11 @@
 node_modules
 config.tsx
 
-.expo/*
+
 .vscode/
 
 test/*
+ngrok
+
+.expo/*
+.expo/packager-info.json
