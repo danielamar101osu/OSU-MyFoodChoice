@@ -1,3 +1,6 @@
+
+
+//Calculates distance between two points
 export function getDistanceFromLatLonInMi(dist1, dist2) {
   if (!dist1 || !dist2) {
     return 0;

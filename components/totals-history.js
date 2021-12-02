@@ -2,6 +2,13 @@ import React, { } from 'react';
 import { Text, useWindowDimensions, View } from 'react-native';
 import { LineChart } from 'react-native-chart-kit';
 
+/**
+ * @param {*} data
+ *      Food history data
+ * @returns 
+ *      Returns a view of three graphs: this week, this month, and YTD to be displayed when a nutrition
+ *      property is clicked   
+ */
 export default function TotalsHistory({ data, chartConfig }) {
     const { height, width } = useWindowDimensions();
     return (<View style={{}}>

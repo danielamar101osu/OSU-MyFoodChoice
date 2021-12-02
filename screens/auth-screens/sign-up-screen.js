@@ -1,14 +1,17 @@
 import React, { useState } from 'react';
-import { StyleSheet, Pressable, View, Text, TouchableOpacity, TextInput, Aux, Modal, SafeAreaView, ScrollView, Image, KeyboardAvoidingView } from 'react-native';
+import { StyleSheet, Pressable, View, Text, TouchableOpacity, TextInput, Modal, SafeAreaView, ScrollView, Image, KeyboardAvoidingView } from 'react-native';
 import * as firebase from 'firebase';
-import parseErrorStack from 'react-native/Libraries/Core/Devtools/parseErrorStack';
 import { post } from '../../services/networking/network';
-import { LongPressGestureHandler } from 'react-native-gesture-handler';
-import { LearnMoreLinks } from 'react-native/Libraries/NewAppScreen';
 import DropDownPicker from 'react-native-dropdown-picker';
-import { CommonActions } from '@react-navigation/routers';
 
+/**
+ * This screen is in charge of displaying 
+ * the sign up screen, processing sign up information
+ * and error handling/input validation.
+ */
 export default function SignUpScreen({ navigation }) {
+
+  //User credentials store
   const [userInfo, setUserInfo] = useState(
     {
       email: '',
@@ -22,6 +25,8 @@ export default function SignUpScreen({ navigation }) {
       password: '',
       confirmPassword: ''
     });
+
+  //Error stores
   const [errorMessage, setErrorMessage] = useState('');
   const [modalVisible, setModalVisible] = useState('');
 
@@ -39,7 +44,7 @@ export default function SignUpScreen({ navigation }) {
     heightInch: 'Height in Inches'
   };
 
-  //Height Feet dropdown data
+  //Height Feet dropdown variables
   const [heightInchOpen, setHeightInchOpen] = useState(false);
   const [heightInchValue, setHeightInchValue] = useState(null);
   const [heightInchItem, setHeightInchItem] = useState([
@@ -57,7 +62,7 @@ export default function SignUpScreen({ navigation }) {
     { label: '11 in', value: '11' },
   ]);
 
-  //Height Inches dropdown data
+  //Height Inches dropdown variables
   const [heightFootOpen, setHeightFootOpen] = useState(false);
   const [heightFootValue, setHeightFootValue] = useState(null);
   const [heightFootItem, setHeightFootItem] = useState([
@@ -68,6 +73,9 @@ export default function SignUpScreen({ navigation }) {
     { label: '8 ft', value: '8' },
   ]);
 
+  /**
+   * Validates signup information, displays error modal is there is a problem
+   */
   async function validateSignUp() {
 
     for (const [key, value] of Object.entries(userInfo)) {
@@ -80,6 +88,7 @@ export default function SignUpScreen({ navigation }) {
       }
     }
 
+    // Ex: 4ft * 12 + 3 inches = 51inch height
     const totalHeight = (parseInt(userInfo.heightFoot) * 12) + parseInt(userInfo.heightInch);
 
     //Set real height after its confirmed to exist
@@ -100,8 +109,11 @@ export default function SignUpScreen({ navigation }) {
     await signUp();
   }
 
+  /**
+   * Create a user in firestore and route to loading screen
+   * TODO: Cleanup this method, remove promise antipattern
+   */ 
   async function signUp() {
-    console.log(`In signup, user info is ${userInfo}`);
     try {
 
       //Create firebase user
@@ -146,13 +158,14 @@ export default function SignUpScreen({ navigation }) {
   async function signIn() {
     try {
       await firebase.auth().signInWithEmailAndPassword(userInfo.email, userInfo.password);
-      console.log('logged in');
+      console.log('Logged in. Routing to loading screen...');
       navigation.navigate('Loading');
     } catch (e) {
       console.log(e);
     }
   }
 
+ //Sign up screen view React CSS
   return (
     <SafeAreaView style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'white' }}>
       <KeyboardAvoidingView behavior={'padding'} style={{ flex: 1, width: '100%' }} >
@@ -189,6 +202,7 @@ export default function SignUpScreen({ navigation }) {
             <TextInput placeholder='dot #' keyboardType={'number-pad'} onChangeText={c => setUserInfo({ ...userInfo, dotNumber: c })} style={{ marginVertical: 10, borderRadius: 5, borderWidth: 1, height: 50, padding: 5, flex: 1 }}></TextInput>
           </View>
           <View style={{ flexDirection: 'row', width: "100%", justifyContent: 'space-between', zIndex: 1 }}>
+            {/* Height in feet dropdwon picker */}
             <DropDownPicker
               placeholder="Feet"
               zIndex={1000}

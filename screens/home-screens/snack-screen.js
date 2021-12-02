@@ -4,6 +4,9 @@ import { useSelector } from 'react-redux';
 import FoodInfoModal from '../../components/food-info-modal';
 import FoodListItem from '../../components/food-list-item';
 
+/**
+ * Subscreen displayed below the home screen when the snac tab is selected.
+ */
 export default function SnackScreen() {
   const meals = useSelector((state) => state.food.meals);
 

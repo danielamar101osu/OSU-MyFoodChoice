@@ -12,14 +12,20 @@ import LoadingScreen from './screens/auth-screens/loading-screen';
 import * as firebase from 'firebase'
 import LoginScreen from './screens/auth-screens/login-screen';
 import SignUpScreen from './screens/auth-screens/sign-up-screen';
+
+/**
+ * Main entry point of application. This file loads screens and initializes the firebase connection.
+ */
 const rootReducer = combineReducers({
   user: userReducer,
   food: foodReducer
 })
+
 const store = createStore(rootReducer);
 
 const Stack = createNativeStackNavigator();
 
+//TODO: Store this in environment variable. Obvious security risk.
 if (firebase.apps.length === 0) {
   firebase.initializeApp({
     apiKey: "AIzaSyBCjwYHTf9Yj1kAN7mByIhnA3rD0OZlzJY",

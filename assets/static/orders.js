@@ -1,3 +1,7 @@
+
+/**
+ * Testing data. Not used anymore
+ */
 export default ORDER_HISTORY_DUMMY = [
   {
     "food": {

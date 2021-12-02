@@ -1,7 +1,13 @@
 import React, { } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-// import { google_api_key } from '../../config';
 
+/**
+ * Formats food data into a nutrition label displayed wwhen clicked on a food item
+ * @param data
+ *      Food data
+ * @returns 
+ *      A view of a nutrition label
+ */
 export default function NutritionLabel({ data }) {
     return (
         <View>

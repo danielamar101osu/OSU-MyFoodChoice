@@ -9,8 +9,6 @@ import SnackScreen from './snack-screen';
 import { nextLocation, previousLocation, setAllMeals, setMeals, setOrderHistory } from '../../redux/actions/food-action';
 import { get } from '../../services/networking/network';
 import HistoryScreen from './history-screen';
-import ORDER_HISTORY_DUMMY from '../../assets/static/orders';
-import * as firebase from 'firebase';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const renderScene = SceneMap({
@@ -19,18 +17,24 @@ const renderScene = SceneMap({
   third: HistoryScreen,
 });
 
+/**
+ * Main screen upon user login. In charge of displaying subscreens and components.
+
+ */
 export default function HomeScreen({ navigation }) {
   const [index, setIndex] = useState(0);
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
   const locationName = useSelector((state) => {
     if (state.food.meals == null || state.food.meals.location == null) {
-      return 'loading...';
+      return 'Loading...';
     } else {
       return state.food.meals.location.name;
     }
   });
   const [userProfile, setUserProfile] = useState(false);
+
+  // Current screen var
   const [routes] = useState([
     { key: 'first', title: 'Meal' },
     { key: 'second', title: 'Snack' },
@@ -44,7 +48,7 @@ export default function HomeScreen({ navigation }) {
 
   useEffect(() => {
     if (user.location.latitude !== 0) {
-      console.log('fetching meals');
+      console.log('Fetching Meals...');
       fetchMeals();
     }
   }, [
@@ -69,11 +73,14 @@ export default function HomeScreen({ navigation }) {
     dispatch(setOrderHistory(response));
   }
   useEffect(() => {
-    console.log('fetching');
+    console.log('Fetching Order History');
     fetchOrderHistory();
   }, []);
+
   const layout = useWindowDimensions();
+
   return (
+    //Top most part of home screen
     <View style={{ flex: 1, backgroundColor: 'white' }}>
       <SafeAreaView style={{ flex: 1, justifyContent: 'center', backgroundColor: 'white' }}>
         <View style={{ justifyContent: 'space-between', flexDirection: 'row', paddingHorizontal: 15 }}>
@@ -91,13 +98,13 @@ export default function HomeScreen({ navigation }) {
           </View>
           <ProfileInitials
             showProfile={() => {
-              console.log('pressed');
               setUserProfile(true);
             }}
             size={55}
           />
         </View>
       </SafeAreaView>
+      {/* Subscreens */}
       <TabView
         style={{ flex: 5, paddingTop: 0 }}
         renderTabBar={(props) => (

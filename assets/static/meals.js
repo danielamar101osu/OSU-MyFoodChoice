@@ -1,6 +1,9 @@
 import locations from "./locations";
 import fetch from 'node-fetch'
 
+/**
+ * Generates random meals. Not used anymore. Figured it was useful to keep around for next group.
+ */
 export default getMeals = async () => {
     let out = []
     for (let i = 0; i < 4; i++) {

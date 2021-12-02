@@ -4,11 +4,17 @@ import { useSelector } from 'react-redux';
 import FoodInfoModal from '../../components/food-info-modal';
 import FoodListItem from '../../components/food-list-item';
 
+/**
+ *  Subscreen displayed below home screen when dinner tab is selected.
+ */
 export default function DinnerScreen() {
+  //Gets local meal state
   const meals = useSelector((state) => state.food.meals);
 
+  //Modal variables
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedItem, setSelectedItem] = useState({});
+
   return (
     <View
       style={{

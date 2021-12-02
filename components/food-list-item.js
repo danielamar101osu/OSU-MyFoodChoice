@@ -4,9 +4,18 @@ import { Ionicons } from '@expo/vector-icons';
 import { useSelector } from 'react-redux';
 import { getDistanceFromLatLonInMi } from '../services/functions/common';
 
+/**
+ * 
+ * @param item
+ *      food item data
+ * @returns 
+ *  A view of an individual food entry on the meal/snack screens. When pressed, the food info modal appears
+ */
 export default function FoodListItem({ setModalVisible, setSelectedItem, item }) {
+  //Retrieve user information
   const user = useSelector((state) => state.user);
-    const meals = useSelector((state) => state.food.meals);
+  //Retrieve meal information
+  const meals = useSelector((state) => state.food.meals);
     
   return (
     <TouchableOpacity
@@ -16,6 +25,7 @@ export default function FoodListItem({ setModalVisible, setSelectedItem, item })
       }}
     >
       <View
+        //Food name
         key={item.item.id}
         style={{
           marginBottom: 20,
@@ -31,11 +41,13 @@ export default function FoodListItem({ setModalVisible, setSelectedItem, item })
             <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 5 }}>
               <Ionicons name="ios-location" size={18} color="#333333" style={{ marginHorizontal: 8 }} />
               <Text style={{ fontFamily: 'Nunito-Light' }}>
+                {/* Restaurant name and distance calculation ex: Sloopys Diner - 0.17mi  */}
                 {meals.location.name} - {getDistanceFromLatLonInMi(meals.location, user.location)}mi
               </Text>
             </View>
           </View>
           <View style={{ justifyContent: 'center', flexDirection: 'column', alignItems: 'center' }}>
+            {/* Calories */}
             <Text style={{ color: '#000000', fontSize: 18, fontFamily: 'Nunito-SemiBold' }}>{item.item.kcalValue}</Text>
             <Text style={{ fontSize: 12, fontFamily: 'Nunito-Light' }}>calories</Text>
           </View>

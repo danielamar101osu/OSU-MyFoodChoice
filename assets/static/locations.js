@@ -1,3 +1,7 @@
+
+/**
+ * This is now stored in firebase. Not used anymore
+ */
 export default locations = [
     {
         name: 'Curl Market',

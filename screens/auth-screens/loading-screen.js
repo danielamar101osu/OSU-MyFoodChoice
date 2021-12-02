@@ -1,5 +1,3 @@
-// In App.js in a new project
-
 import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, ActivityIndicator } from 'react-native';
 import * as firebase from 'firebase';
@@ -9,15 +7,23 @@ import { useDispatch } from 'react-redux';
 import { setUser, updateLocation } from '../../redux/actions/user-action';
 import * as Location from 'expo-location';
 
+/**
+ * Checks stored local user information to determine next screen to load
+ * 
+ * @returns 
+ *    A loading view
+ */
 export default function LoadingScreen({ navigation }) {
   const dispatch = useDispatch();
 
   async function checkStatusAndLogin(u, loginScreen) {
-    console.log('checking Status');
+    console.log('Checking Status...');
     if (u) {
-      console.log('user found');
+      console.log('Local user info found...');
+      //Retrieve user information from server
       let user = await get("/users/:uid", {});
       if (!user) {
+        console.log('Remote user info not found.. Routing to login.')
         navigation.dispatch(
           CommonActions.reset({
             index: 1,
@@ -25,6 +31,7 @@ export default function LoadingScreen({ navigation }) {
           })
         );
       } else {
+        console.log('Remote user info found! Routing to home.')
         dispatch(setUser(user));
         setTimeout(() => {
           navigation.dispatch(
@@ -36,7 +43,9 @@ export default function LoadingScreen({ navigation }) {
         }, 1000);
 
       }
+
     } else if (loginScreen) {
+      console.log('Local user info not found... Routing to loogin screen.');
       navigation.dispatch(
         CommonActions.reset({
           index: 1,
@@ -55,13 +64,17 @@ export default function LoadingScreen({ navigation }) {
 
   useEffect(() => {
     (async () => {
+      //Ask user if we can have location data
       let { status } = await Location.requestForegroundPermissionsAsync();
+
       if (status !== 'granted') {
         setErrorMsg('Permission to access location was denied');
         return;
       }
-
+      //Get coordinates
       let location = await Location.getLastKnownPositionAsync({});
+
+      //Update local state
       dispatch(updateLocation({
         latitude: location.coords.latitude,
         longitude: location.coords.longitude,

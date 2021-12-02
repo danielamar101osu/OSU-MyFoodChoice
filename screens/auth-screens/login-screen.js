@@ -1,20 +1,24 @@
-// In App.js in a new project
-
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, TextInput, SafeAreaView, Image } from 'react-native';
+import { View, Text, TouchableOpacity, TextInput, SafeAreaView} from 'react-native';
 import * as firebase from 'firebase';
-import { get } from '../../services/networking/network';
 
+/**
+ * This method is in charge of displaying the login scren
+ * @returns 
+ *  A view of the login screen
+ */
 export default function LoginScreen({ navigation }) {
+  //Email and password stores
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  async function signIn() {
 
+  async function signIn() {
     try {
       await firebase.auth().signInWithEmailAndPassword(email, password);
+      console.log('Login successful. Routing to loading screen...')
       navigation.navigate('Loading');
     } catch (e) {
-      console.log(e);
+      console.log('Error logging in:' + e);
     }
   }
 

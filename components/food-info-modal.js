@@ -9,19 +9,33 @@ import NutritionLabel from './nutrition-label';
 import { get, post } from '../services/networking/network';
 import { setOrderHistory } from '../redux/actions/food-action';
 
+/**
+ * This component is in charge of producing the modal that is displayed upon 
+ * pressing on a food in the dinner/snack screen
+ */
 export default function FoodInfoModal({ selectedItem, modalVisible, setModalVisible, locationData }) {
-  const user = useSelector((state) => state.user);
+
+  //user and meal local info
+  const user = useSelector((state) => state.user); 
   const meals = useSelector((state) => state.food.meals);
+
+  //State stores
   const [alert, setAlert] = useState('Order Saved!');
   const [distance, setDistance] = useState(0);
   const fadeAnim = useRef(new Animated.Value(100)).current;
   const dispatch = useDispatch();
+
+  //Default location
   const [region, setRegion] = useState({
     latitude: 40,
     longitude: -83,
     latitudeDelta: 0.04,
     longitudeDelta: 0.0421,
   });
+
+  /**
+   * Saves food upon button press within modal
+   */
   const saveFood = async () => {
     setModalVisible(!modalVisible);
     let res = await post(`/users/:uid/orders`, { locationId: locationData, foodId: selectedItem.id });
@@ -42,10 +56,12 @@ export default function FoodInfoModal({ selectedItem, modalVisible, setModalVisi
     ]).start();
   };
 
+  //User region store maanipulator
   useEffect(() => {
     setRegion(user.location);
   }, [user.location]);
 
+  //Modal view React CSS
   return (
     <View style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: 0 }}>
       {modalVisible ? (
@@ -104,13 +120,14 @@ export default function FoodInfoModal({ selectedItem, modalVisible, setModalVisi
             <ScrollView style={{ height: '87%' }}>
               {user.location.latitude == 0 || Platform.OS != 'ios' ? (
                 <View></View>
-              ) : (
+              ) : {/* Google Maps view */}(
                 <MapView
                   style={{ height: 350, width: 350, borderRadius: 20, marginHorizontal: 10 }}
                   initialRegion={region}
                   scrollEnabled={true}
                   region={{ ...region, latitude: meals.location.lat, longitude: meals.location.long }}
                 >
+                  
                   <MapViewDirections
                     strokeColor="#BB0000"
                     strokeWidth={3}

@@ -12,11 +12,13 @@ const chartConfig = {
   strokeWidth: 2, // optional, default 3
 };
 
+/**
+ * This method is in charge of creating the history screen view.
+ */
 export default function HistoryScreen() {
   const [selectedNutrient, setSelectedNutrient] = useState(null);
   const orders = useSelector((state) => state.food.orders);
   useEffect(() => {
-    console.log(selectedNutrient);
   }, [selectedNutrient]);
   return (
     <View

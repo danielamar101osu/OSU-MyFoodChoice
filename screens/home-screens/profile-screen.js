@@ -10,9 +10,15 @@ import { updateAllergy, updateRestriction, updateUser } from '../../redux/action
 import { put } from '../../services/networking/network';
 import DropDownPicker from 'react-native-dropdown-picker';
 
+/**
+ * Screen that is displayed upon pressing on a user's initials on the home screen.
+ */
 export default function ProfileScreen({ closeProfileScreen, navigation }) {
+  //User store
   const user = useSelector((state) => state.user.user);
   const dispatch = useDispatch();
+
+  //Modal store
   const [showEditModal, setShowEditModal] = useState([]);
   const [editValues, setEditValues] = useState({});
 
