@@ -34,7 +34,7 @@ If all prerequisites are installed, you should be greeted with a web page that l
 
 ![Alt text](doc/metro.png?raw=true "metro")
 
-Note: Ensure the Tunnel tab is selected rather than the LAN option.
+**Note: Ensure the Tunnel tab is selected rather than the LAN option.**
 
 
 
