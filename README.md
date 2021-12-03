@@ -3,16 +3,20 @@ Ohio State University CSE 5915 Capstone Fall 2021
 
 # OSU MyFoodChoice
 
-OSU MyFoodChoice App is intended to be an application that students can use to find food near their current location that meets their dietary restrictions and easily track their own nutrition.
+OSU MyFoodChoice App is an application that Ohio State University students can use to find food based on their current location that meets their dietary restrictions and easily track their own nutrition.
 
-The product is an Android/iOS mobile application that stores data in the cloud for accessibility from any device at any time.
+This application is built using node.js with the React Native and Expo frameworks. React Native combines the best parts of native development with React, a best-in-class JavaScript library for building user interfaces. Expo is a set of tools and services built around React Native and native platforms that help you develop, build, deploy, and quickly iterate on iOS, Android, and web apps from the same JavaScript/TypeScript codebase.
 
 This repository only stores the front-end aspect of this application. Our design philosophy was the create an uncoupled front-end/back-end to make it a whole lot easier to implement directly into the Ohio State Mobile App.
+
+
+
 
 ## Prerequisites
 <ol>
   <li>Ensure Server Repository is set up. This is currently a private repo: (https://github.com/lukePetersen9/OSUMyChef-Server) </li>
 <li>Node V14 or above is properly installed. (https://nodejs.org/en/download) </li>
+  <li> npm is installed </li>
 <li>Ensure Expo Go is downloaded on your mobile device</li>
 <li>Obtain our Google API Key </li>
 </ol>
