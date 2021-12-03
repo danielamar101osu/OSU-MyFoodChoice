@@ -1,6 +1,3 @@
-
-Ohio State University CSE 5915 Capstone Fall 2021
-
 # OSU MyFoodChoice
 
 OSU MyFoodChoice App is an application that Ohio State University students can use to find food based on their current location that meets their dietary restrictions and easily track their own nutrition.
@@ -107,7 +104,7 @@ This file tree explains all files in this codebase from a high level perspective
 
 
 ### Developers
-
+Ohio State University CSE 5915 Capstone Fall 2021
 * Daniel Amar
 * Nygiel Spann
 * Luke Peterso
