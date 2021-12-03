@@ -4,7 +4,7 @@ OSU MyFoodChoice App is an application that Ohio State University students can u
 
 This application is built using node.js with the React Native and Expo frameworks. React Native combines the best parts of native development with React, a best-in-class JavaScript library for building user interfaces. Expo is a set of tools and services built around React Native and native platforms that help you develop, build, deploy, and quickly iterate on iOS, Android, and web apps from the same JavaScript/TypeScript codebase.
 
-This repository only stores the front-end aspect of this application. Our design philosophy was the create an uncoupled front-end/back-end to make it a whole lot easier to implement directly into the Ohio State Mobile App.
+This repository only stores the front-end aspect of this application. Our design philosophy was to create a loosly coupled front-end/back-end to make it a whole lot easier to implement directly into the Ohio State Mobile App.
 
 
 
