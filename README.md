@@ -32,7 +32,9 @@ npm run start
 
 If all prerequisites are installed, you should be greeted with a web page that looks like this:
 
-![Alt text](relative/path/to/img.jpg?raw=true "Title")
+![Alt text](doc/metro.png?raw=true "metro")
+
+Note: Ensure the Tunnel tab is selected rather than the LAN option.
 
 
 
