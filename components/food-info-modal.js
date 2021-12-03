@@ -120,7 +120,8 @@ export default function FoodInfoModal({ selectedItem, modalVisible, setModalVisi
             <ScrollView style={{ height: '87%' }}>
               {user.location.latitude == 0 || Platform.OS != 'ios' ? (
                 <View></View>
-              ) : {/* Google Maps view */}(
+              ) : ( 
+                
                 <MapView
                   style={{ height: 350, width: 350, borderRadius: 20, marginHorizontal: 10 }}
                   initialRegion={region}

@@ -259,8 +259,7 @@ export default function ProfileScreen({ closeProfileScreen, navigation }) {
                   value={user.allergies[el]}
                   onChange={() => {
                     let val = { allergies: {} };
-                    val.allergies[el] = !user.allergies[el];
-                    console.log('dsfsd', val);
+                    val.allergies[el] = !user.allergies[el]
                     put('/users/:uid', val);
                     dispatch(updateAllergy(el));
                   }}
@@ -295,7 +294,6 @@ export default function ProfileScreen({ closeProfileScreen, navigation }) {
                     let val = { restrictions: {} };
                     val.restrictions[el] = !user.restrictions[el];
                     put('/users/:uid', val);
-                    console.log('dsfsd', val);
 
                     dispatch(updateRestriction(el));
                   }}
